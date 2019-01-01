@@ -1,6 +1,6 @@
 package com.ncu.strong.bbs.dao;
 
-import com.ncu.strong.bbs.pojo.ActivityEnter;
+import com.ncu.strong.bbs.po.ActivityEnter;
 
 public interface ActivityEnterMapper {
     /**

@@ -1,10 +1,9 @@
 package com.ncu.strong.bbs.service.Impl;
 
 import com.ncu.strong.bbs.dao.UserMapper;
-import com.ncu.strong.bbs.pojo.User;
+import com.ncu.strong.bbs.po.User;
 import com.ncu.strong.bbs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,8 +14,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userDao;
 
+    public UserServiceImpl() {}
+
     @Override
-    public List findAllUser(){
+    public List<User> findAllUser(){
         return userDao.findAllUser();
     }
 
@@ -27,18 +28,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int insertUser(User user) {
-        if(userDao.insert(user) == 1){
-            return 1;
-        }
-        return 0;
+        return userDao.insert(user);
     }
 
     @Override
     public int updateUser(User user){
-        if(userDao.updateByPrimaryKeySelective(user) == 1){
-            return 1;
-        }
-        return 0;
+        return userDao.updateByPrimaryKeySelective(user);
     }
 
     @Override
@@ -70,5 +65,4 @@ public class UserServiceImpl implements UserService {
     public User getEnterActivity(Integer id) {
         return userDao.getEnterActivity(id);
     }
-
 }

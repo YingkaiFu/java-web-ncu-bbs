@@ -1,6 +1,6 @@
 package com.ncu.strong.bbs.dao;
 
-import com.ncu.strong.bbs.pojo.Activity;
+import com.ncu.strong.bbs.po.Activity;
 
 import java.util.List;
 

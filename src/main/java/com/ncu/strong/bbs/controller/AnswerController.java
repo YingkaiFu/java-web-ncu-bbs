@@ -1,6 +1,6 @@
 package com.ncu.strong.bbs.controller;
 
-import com.ncu.strong.bbs.pojo.Answer;
+import com.ncu.strong.bbs.po.Answer;
 import com.ncu.strong.bbs.service.AnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/answer")

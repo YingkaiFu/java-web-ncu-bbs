@@ -1,6 +1,6 @@
 package com.ncu.strong.bbs.controller;
 
-import com.ncu.strong.bbs.pojo.Tweet;
+import com.ncu.strong.bbs.po.Tweet;
 import com.ncu.strong.bbs.service.TweetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

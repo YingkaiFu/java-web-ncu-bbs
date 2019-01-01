@@ -1,6 +1,6 @@
 package com.ncu.strong.bbs.dao;
 
-import com.ncu.strong.bbs.pojo.userActivityKey;
+import com.ncu.strong.bbs.po.userActivityKey;
 
 public interface userActivityMapper {
     /**

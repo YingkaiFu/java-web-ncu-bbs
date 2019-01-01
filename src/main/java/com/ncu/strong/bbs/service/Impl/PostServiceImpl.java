@@ -1,7 +1,7 @@
 package com.ncu.strong.bbs.service.Impl;
 
 import com.ncu.strong.bbs.dao.PostMapper;
-import com.ncu.strong.bbs.pojo.Post;
+import com.ncu.strong.bbs.po.Post;
 import com.ncu.strong.bbs.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

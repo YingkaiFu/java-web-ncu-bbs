@@ -1,6 +1,6 @@
 package com.ncu.strong.bbs.dao;
 
-import com.ncu.strong.bbs.pojo.Answer;
+import com.ncu.strong.bbs.po.Answer;
 
 public interface AnswerMapper {
     /**

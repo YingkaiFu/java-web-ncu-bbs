@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-Hans">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.css">
+        <link rel="stylesheet" href="css/bootstrap-fileinput/fileinput.css">
+        <link rel="stylesheet" href="css/common.css">
+        <script src="js/jquery-3.3.1.js"></script>
+        <title>创建活动</title>
+    </head>
+    <body>
+        <!-- 渲染顶部导航栏 -->
+        <script src="js/jquery-3.3.1.js"></script>
+        <script src="js/header.js"></script>
+
+        <div class="container" id="main-body">
+            
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2">
+                    <form>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">活动标题</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">报名时间</label>
+                            <input type="datetime-local" class="form-control" id="">
+                            <span>至</span>
+                            <input type="datetime-local" class="form-control" id="">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputFile">活动时间</label>
+                            <input type="datetime-local" class="form-control" id="">
+                            <span>至</span>
+                            <input type="datetime-local" class="form-control" id="">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputFile">活动地点</label>
+                            <input class="form-control" type="text" id="">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputFile">活动图片</label>
+                            <form enctype="multipart/form-data">
+                                <input id="tweet-editor-image" type="file" class="file">
+                            </form>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputFile">活动描述</label>
+                            <div id="editor"></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+        </div>
+        <!-- 渲染底部版权声明 -->
+        <script src="js/footer.js"></script>
+        <script src="js/jquery-3.3.1.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/bootstrap-fileinput/fileinput.js"></script>
+        <script src="js/bootstrap-fileinput/zh.js"></script>
+        <script src="js/wangEditor.js"></script>
+        <script>
+            var E = window.wangEditor;
+            var editor = new E("#editor");
+            editor.create();
+
+
+            $("#tweet-editor-image").fileinput({
+                showUpload: true,
+                fileSizeGetter: true,
+                theme: 'fa',
+                // language: 'zh',
+                uploadUrl: '#',
+                allowedFileExtensions: ['jpg', 'png', 'gif'],
+                maxFileSize: 10240,
+                maxFilesNum: 1,
+                required: false,
+                showRemove: false,
+                browseOnZoneClick: true,
+                initialPreviewAsData: true,
+                showCaption: false,
+                initialPreviewShowDelete: false,
+                showRemove: false,
+                showClose: false
+            });
+
+            $(".file-drop-zone-title").html("最小尺寸950px*350px,图片大小不超过10MB<br>（只能上传一张照片）");
+        </script>
+    </body>
+</html>

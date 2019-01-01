@@ -1,6 +1,6 @@
 package com.ncu.strong.bbs.dao;
 
-import com.ncu.strong.bbs.pojo.Admin;
+import com.ncu.strong.bbs.po.Admin;
 
 public interface AdminMapper {
     /**

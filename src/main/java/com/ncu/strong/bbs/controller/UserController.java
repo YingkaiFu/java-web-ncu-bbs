@@ -1,182 +1,236 @@
 package com.ncu.strong.bbs.controller;
 
-import com.ncu.strong.bbs.pojo.Account;
-import com.ncu.strong.bbs.pojo.User;
+import com.ncu.strong.bbs.dto.ResponseData;
+import com.ncu.strong.bbs.po.Account;
+import com.ncu.strong.bbs.po.User;
 import com.ncu.strong.bbs.service.AccountService;
 import com.ncu.strong.bbs.service.UserService;
-import com.ncu.strong.bbs.util.FileUtil;
+import com.ncu.strong.bbs.util.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = {"/user"})
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    private final AccountService accountService;
 
     @Autowired
-    private AccountService accountService;
-
-    @Autowired
-    private HttpSession session;
-
-    @Autowired
-    HttpServletResponse response;
-
-    @Autowired
-    HttpServletRequest request;
-
-
-    private FileUtil fileUtil;
-
-    /**
-     * 获取所有用户
-     * @return
-     */
-    @RequestMapping(value = {"/findAll"},produces = {"application/json;charset=UTF-8"},method = RequestMethod.GET)
-    public List getAllUsers(){
-        //return "测试";
-        return  userService.findAllUser();
+    public UserController(AccountService accountService, UserService userService) {
+        this.accountService = accountService;
+        this.userService = userService;
     }
 
     /**
-     * 登陆
-     * @param account
-     * @return
+     * 功能：获取所有用户信息
+     * 权限：管理员
      */
-    @PostMapping(value={"/login"})
-    public String  login(@RequestBody Account account){
+    @RequestMapping(
+            produces = "application/json",
+            method = RequestMethod.GET)
+    public ResponseData getAllUsers(){
+        List<User> users = userService.findAllUser();
+        ResponseData responseData = new ResponseData();
+        responseData.getData().put("users", users);
+        return  responseData;
+    }
 
-       Account account1 = accountService.getAccountByLoginName(account.getLoginName());
-       if(account1 != null){
-           String password = account1.getPassword();
-           if(password.equals(account.getPassword())){
-               session.setAttribute("accountId",account1.getId());
-               User user  = userService.getUserProfileByAccoundId(account1.getId());
-               session.setAttribute("profileId",user.getId());
-               return "登陆成功";
-           }else{
-               return "密码错误";
-           }
-       }else{
-           return "用户名不存在";
-       }
+    /**
+     * 功能：用户登陆
+     * 权限：用户
+     */
+    @PostMapping(
+            value = "/logIn",
+            consumes = "application/json",
+            produces = "application/json")
+    public ResponseData login(@RequestBody Account logAccount, HttpServletRequest request){
+
+        System.out.println(logAccount.toString());
+        HttpSession session = request.getSession();
+        ResponseData responseData = new ResponseData();
+        Account account = accountService.getAccountByLoginName(logAccount.getLoginName());
+        if (account != null) {
+            if (logAccount.equals(account)) {
+                responseData.setCode(1);
+                responseData.setMsg("登录成功");
+
+                User user = userService.getUserProfileByAccoundId(account.getId());
+                responseData.getData().put("user", user);
+
+                session.setAttribute("account", account);
+                session.setAttribute("user", user);
+            } else{
+                responseData.setCode(0);
+                responseData.setMsg("密码错误");
+            }
+        }else{
+            responseData.setCode(0);
+            responseData.setMsg("用户名不存在");
+        }
+
+        return responseData;
+    }
+
+
+    /**
+     * 功能：退出登录
+     * 权限：用户
+     * 描述：将session中的值移出，完成退出登录
+     */
+    @GetMapping(
+            value={"/logOut"})
+    public ResponseData logOut(HttpSession session){
+        ResponseData responseData = new ResponseData();
+
+        session.removeAttribute("user");
+        session.removeAttribute("account");
+
+        responseData.setCode(1);
+        responseData.setMsg("成功退出");
+
+        return responseData;
     }
 
     /**
      * 注册
-     * @param account
-     * @return
      */
-    @PostMapping(value={"/register"})
-    public String register(@RequestBody Account account){
-        Account account1 = accountService.getAccountByLoginName(account.getLoginName());
-        if(account1 != null){
-            return "用户名已存在";
-        }
-        else{
-            if(accountService.insertAccount(account) == 1){
-                String name = account.getLoginName();
-                account = accountService.getAccountByLoginName(name);
+    @PostMapping(
+            value={"/register"},
+            consumes = "application/json",
+            produces = "application/json")
+    public ResponseData register(@RequestBody Account registerAccount){
+        ResponseData responseData = new ResponseData();
+
+        // 判断账户是否已经被注册
+        Account account = accountService.getAccountByLoginName(registerAccount.getLoginName());
+        if (account != null) {
+            responseData.setCode(0);
+            responseData.setMsg("用户已存在");
+        } else {
+            if (accountService.insertAccount(registerAccount) > 0) {
+                Integer accountId = registerAccount.getId();
+                System.out.println("accountId => " + accountId);
+
+                // 封装用户对象
                 User user = new User();
-                user.setUserAccountId(account.getId());
+                user.setUserAccountId(accountId);
                 userService.insertUser(user);
-                return "注册成功";
-            }
-            else{
-                return "注册失败";
-            }
-        }
-    }
 
-    /**
-     * 获取用户信息
-     * @return
-     */
-    @RequestMapping(value={"/getProfile"},method = RequestMethod.GET)
-    public User  getProfile(){
-         Integer profileId = (Integer)session.getAttribute("profileId");
-         return userService.getUserProfileById(profileId);
-    }
-
-    /**
-     * 更新用户信息
-     * @param user
-     * @return
-     */
-    @PostMapping(value={"/updateProfile"})
-    public String updateProfile(@RequestBody User user){
-        Integer profileId = (Integer) session.getAttribute("profileId");
-        System.out.println(profileId);
-        user.setId(profileId);
-        if(userService.updateUser(user) == 1){
-            return "更改信息成功";
-        }
-        return "更改信息失败";
-
-    }
-
-    /**
-     * 修改密码
-     * @param password
-     * @return
-     */
-    @RequestMapping(value = {"/updatePassword"},method=RequestMethod.POST)
-    public String updatePassword(@RequestBody String password){
-        Account account = new Account();
-        Integer accountId = (Integer) session.getAttribute("accountId");
-        account.setId(accountId);
-        account.setPassword(password);
-        if(accountService.updateAccount(account) == 1){
-            return "修改密码成功";
-        }
-        return "修改失败";
-
-    }
-
-    /**
-     * 找回密码
-     * @param account
-     * @return
-     */
-    @PostMapping(value={"/findPassword"})
-    public String findPassword(@RequestBody Account account){
-        Account account1 = accountService.getAccountByLoginName(account.getLoginName());
-         if(account1 != null){
-            if(accountService.findPassword(account)==1){
-                return "修改成功";
-            }else{
-                return "修改失败";
+                responseData.setCode(1);
+                responseData.setMsg("注册成功");
+            } else {
+                responseData.setCode(0);
+                responseData.setMsg("注册失败，请重新尝试");
             }
         }
-        return "用户不存在";
-    }
 
-    @RequestMapping(value={"/exit"})
-    public String exit(){
-        session.invalidate();
-        return "成功退出";
+        return responseData;
     }
-
 
     /**
-     * 修改头像
-     * @param file
-     * @return
+     * 功能：获取用户信息
+     * 权限：用户
+     * 描述：从session取出预先存入的用户信息
      */
-   @PostMapping("/updateAvatar")
-    public String singleFileUpload(@RequestParam("file")MultipartFile file){
+    @RequestMapping(
+            value = {"/getProfile"},
+            method = RequestMethod.GET)
+    public ResponseData getProfile(HttpServletRequest request){
+        ResponseData responseData = new ResponseData();
+        HttpSession session = request.getSession();
+
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            responseData.setCode(1);
+            responseData.setMsg("成功获得用户信息");
+            responseData.getData().put("user", user);
+        } else {
+            responseData.setCode(0);
+            responseData.setMsg("用户未登录");
+        }
+
+        return responseData;
+    }
+
+    /**
+     * 功能：更新用户信息
+     * 权限：用户
+     * 描述：更新数据库和session中的信息
+     */
+    @PostMapping(
+            value={"/updateProfile"},
+            consumes = "application/json",
+            produces = "application/json")
+    public ResponseData updateProfile(@RequestBody User updateUser, HttpServletRequest request) {
+        ResponseData responseData = new ResponseData();
+        HttpSession session = request.getSession();
+
+        User user = (User) session.getAttribute("user");
+        updateUser.setId(user.getId());
+        session.setAttribute("user", updateUser);
+        if(userService.updateUser(updateUser) == 1){
+            responseData.setCode(1);
+            responseData.setMsg("更新信息成功");
+        } else {
+            responseData.setCode(0);
+            responseData.setMsg("更新信息失败");
+        }
+
+        return responseData;
+    }
+
+    /**
+     * 功能：修改密码
+     * 权限：用户
+     * 描述：更新数据库中密码以及session中的密码
+     */
+    @PostMapping(
+            value = {"/updatePassword"},
+            consumes = "application/json",
+            produces = "application/json")
+    public ResponseData updatePassword(@RequestBody Map<String, Object> updateData, HttpServletRequest request){
+        ResponseData responseData = new ResponseData();
+        HttpSession session = request.getSession();
+
+        Account account = (Account) session.getAttribute("account");
+        if (account != null) {
+            account.setPassword((String) updateData.get("password"));
+            session.setAttribute("account", account);
+            if (accountService.updateAccount(account) == 1) {
+                responseData.setCode(1);
+                responseData.setMsg("更新成功");
+            } else {
+                responseData.setCode(0);
+                responseData.setMsg("更新失败");
+            }
+        } else {
+            responseData.setCode(0);
+            responseData.setMsg("用户未登录");
+        }
+
+        return responseData;
+    }
+
+    /**
+     * 功能：修改头像
+     * 权限：用户
+     */
+   @PostMapping(
+           value = "/updateAvatar",
+           consumes = "application/json",
+           produces = "application/json")
+    public String singleFileUpload(@RequestParam("file")MultipartFile file, HttpSession session){
        if(session.getAttribute("accountId") != null) {
            Integer profileId = (Integer) session.getAttribute("profileId");
-           if (fileUtil.uploadFile(file) == 1) {
+           if (FileUploadUtil.uploadFile(file) == 1) {
                User user = userService.getUserProfileById(profileId);
                user.setAvatar(file.getOriginalFilename());
                userService.updateUser(user);
@@ -188,49 +242,49 @@ public class UserController {
    }
 
     /**
-     * 查询某用户的所有动弹 会员或者管理员权限
-     * @param id
-     * @return
-     * @throws IOException
+     * 功能：查询某用户的所有动弹
+     * 权限：会员或者管理员权限
      */
-    @RequestMapping(value = "tweet/{id}",produces = "application/json;charset=UTF-8",method = RequestMethod.GET)
-    public Object getTweetsByUser(@PathVariable("id")Integer id) throws IOException {
+    @RequestMapping(
+            value = "tweet/{id}",
+            produces = "application/json",
+            method = RequestMethod.GET)
+    public Object getTweetsByUser(@PathVariable("id")Integer id, HttpSession session) {
         if(session.getAttribute("accountId") != null ||
                 session.getAttribute("admin") != null) {
             return userService.getTweetsByUser(id);
         } else {
-            //response.sendRedirect("/user/login.html");
             return "请先登录！";
         }
 
     }
 
     /**
-     * 查询某一用户的所有提问 会员或者管理员权限
-     * @param id
-     * @return
-     * @throws IOException
+     * 功能：查询某一用户的所有提问
+     * 权限：会员或者管理员
      */
-    @RequestMapping(value = "question/{id}",method = RequestMethod.GET)
-    public Object getQuestionsByUser(@PathVariable("id")Integer id) throws IOException {
+    @RequestMapping(
+            value = "question/{id}",
+            consumes = "application/json",
+            method = RequestMethod.GET)
+    public Object getQuestionsByUser(@PathVariable("id")Integer id, HttpSession session) {
         if(session.getAttribute("accountId") != null ||
                 session.getAttribute("admin") != null) {
             return userService.getQuestionsByUser(id);
-
         } else {
-            //response.sendRedirect("/user/login.html");
             return "请先登录！";
         }
     }
 
     /**
-     * 查询某一用户的所有回答 会员或者管理员权限
-     * @param id
-     * @return
-     * @throws IOException
+     * 功能：查询某一用户的所有回答 会员或者管理员权限
+     * 权限：用户、管理员
      */
-    @RequestMapping(value = "answer/{id}",method = RequestMethod.GET)
-    public Object getAnswerByUser(@PathVariable("id") Integer id) throws IOException {
+    @RequestMapping(
+            value = "answer/{id}",
+            consumes = "application/json",
+            method = RequestMethod.GET)
+    public Object getAnswerByUser(@PathVariable("id") Integer id, HttpSession session) {
         if(session.getAttribute("accountId") != null ||
                 session.getAttribute("admin") != null) {
             return userService.getAnswersByUser(id);
@@ -243,12 +297,11 @@ public class UserController {
 
 
     /**
-     * 查看某用户所创建的所有活动 会员或者管理员权限
-     * @param id
-     * @return
+     * 功能：查看某用户所创建的所有活动
+     * 权限：会员或者管理员权限
      */
     @RequestMapping(value = "create/{id}",method = RequestMethod.GET)
-    public Object getCreateActivity(@PathVariable("id") Integer id) throws IOException {
+    public Object getCreateActivity(@PathVariable("id") Integer id, HttpSession session) {
         if(session.getAttribute("accountId") != null ||
                 session.getAttribute("admin") != null) {
             return userService.getCreateActivity(id);
@@ -259,12 +312,11 @@ public class UserController {
     }
 
     /**
-     * 查看某用户参与的所有活动 会员或者管理员权限
-     * @param id
-     * @return
+     * 功能：查看某用户参与的所有活动
+     * 权限：会员或者管理员权限
      */
     @RequestMapping(value = "enter/{id}",method = RequestMethod.GET)
-    public Object getEnterActivity(@PathVariable("id") Integer id) throws IOException {
+    public Object getEnterActivity(@PathVariable("id") Integer id, HttpSession session) {
         if(session.getAttribute("accountId") != null ||
                 session.getAttribute("admin") != null) {
             return userService.getEnterActivity(id);
@@ -273,7 +325,4 @@ public class UserController {
             return "请先登录";
         }
     }
-
-
-
 }

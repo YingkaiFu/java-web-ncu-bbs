@@ -1,7 +1,7 @@
 package com.ncu.strong.bbs.controller;
 
-import com.ncu.strong.bbs.pojo.Post;
-import com.ncu.strong.bbs.pojo.User;
+import com.ncu.strong.bbs.po.Post;
+import com.ncu.strong.bbs.po.User;
 import com.ncu.strong.bbs.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

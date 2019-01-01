@@ -1,7 +1,7 @@
 package com.ncu.strong.bbs.controller;
 
 
-import com.ncu.strong.bbs.pojo.Theme;
+import com.ncu.strong.bbs.po.Theme;
 import com.ncu.strong.bbs.service.ThemeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

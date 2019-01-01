@@ -1,7 +1,7 @@
 package com.ncu.strong.bbs.service.Impl;
 
 import com.ncu.strong.bbs.dao.ActivityMapper;
-import com.ncu.strong.bbs.pojo.Activity;
+import com.ncu.strong.bbs.po.Activity;
 import com.ncu.strong.bbs.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

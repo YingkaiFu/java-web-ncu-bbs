@@ -1,9 +1,7 @@
 package com.ncu.strong.bbs.service;
 
-import com.ncu.strong.bbs.pojo.Setion;
-import org.omg.PortableInterceptor.INACTIVE;
+import com.ncu.strong.bbs.po.Setion;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 public interface SetionService {

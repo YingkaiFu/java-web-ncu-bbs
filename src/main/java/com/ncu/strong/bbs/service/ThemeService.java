@@ -1,6 +1,5 @@
 package com.ncu.strong.bbs.service;
-import com.ncu.strong.bbs.pojo.Theme;
-import com.ncu.strong.bbs.pojo.User;
+import com.ncu.strong.bbs.po.Theme;
 
 import java.util.List;
 

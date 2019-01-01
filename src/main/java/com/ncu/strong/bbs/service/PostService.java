@@ -1,6 +1,6 @@
 package com.ncu.strong.bbs.service;
 
-import com.ncu.strong.bbs.pojo.Post;
+import com.ncu.strong.bbs.po.Post;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

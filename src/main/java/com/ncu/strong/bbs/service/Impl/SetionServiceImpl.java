@@ -1,7 +1,7 @@
 package com.ncu.strong.bbs.service.Impl;
 
 import com.ncu.strong.bbs.dao.SetionMapper;
-import com.ncu.strong.bbs.pojo.Setion;
+import com.ncu.strong.bbs.po.Setion;
 import com.ncu.strong.bbs.service.SetionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

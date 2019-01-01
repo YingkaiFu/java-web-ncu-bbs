@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="zh-Hans">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.css">
+        <link rel="stylesheet" href="css/common.css">
+        <title>用户主页</title>
+    </head>
+    <body>
+        <!-- 渲染顶部导航栏 -->
+        <script src="js/jquery-3.3.1.js"></script>
+        <script src="js/header.js"></script>
+
+        <div class="container" id="main-body">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-lg-offset-4">
+                <div id="avator-wrapper" style="text-align: center; align-items: baseline;">
+                    <img class="img-circle" src="https://avatars1.githubusercontent.com/u/24518663?s=400&u=cae4ff8eb75c1ad8530508f8ed1e1edd57898443&v=4" style="width: 300px;">
+                    <h2>oldtuxi<img src="img/woman.png"></h2>
+                </div>
+            </div>
+            <div class="col-lg-8 col-lg-offset-2" style="display: flex; justify-content: space-around; margin-top: 30px; margin-bottom: 30px;">
+                <div title="身份">
+                    <span class="glyphicon glyphicon-user"></span><span>学生</span>
+                </div>
+                <div title="注册时间">
+                    <span class="glyphicon glyphicon-flag"></span><span>2018-09-12 23:24:02</span>
+                </div>
+                <div title="最近登录">
+                    <span class="glyphicon glyphicon-eye-open"></span><span>2018-09-12 23:24:02</span>
+                </div>
+                <div title="积分数量">
+                    <span class="glyphicon glyphicon-star"></span><span>12</span>
+                </div>
+            </div>
+            <div class="col-lg-8 col-lg-offset-2"> 
+                <div>
+                    <ul class="nav nav-tabs nav-justified" role="tablist">
+                        <li role="presentation" class="active">
+                            <a href="#post" aria-controls="home" role="tab" data-toggle="tab">帖子</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#tweet" aria-controls="profile" role="tab" data-toggle="tab">动态</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#question" aria-controls="messages" role="tab" data-toggle="tab">问题</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#answer" aria-controls="settings" role="tab" data-toggle="tab">回答</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#activity" aria-controls="settings" role="tab" data-toggle="tab">活动</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <!-- 帖子 -->
+                        <div role="tabpanel" class="tab-pane active" id="post">
+                            <div class="list-group">
+                                <a href="post.html?postId=1" class="list-group-item">
+                                    <h4 class="list-group-item-heading"><span>【升学就业】</span>2018 年终盘点：“年度爆款”的区块链真的结束了吗？</h4>
+                                </a>
+                                <a href="post.html?postId=1" class="list-group-item">
+                                    <h4 class="list-group-item-heading"><span>【升学就业】</span>2018 年终盘点：“年度爆款”的区块链真的结束了吗？</h4>
+                                </a>
+                                <a href="post.html?postId=1" class="list-group-item">
+                                    <h4 class="list-group-item-heading"><span>【升学就业】</span>2018 年终盘点：“年度爆款”的区块链真的结束了吗？</h4>
+                                </a>
+                            </div>
+                        </div>
+                        <!-- 动态 -->
+                        <div role="tabpanel" class="tab-pane" id="tweet">
+                            <div class="list-group">
+                                <div class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                            <a href="https://my.oschina.net/u/3417788">
+                                                <img src="https://static.oschina.net/uploads/user/1708/3417788_50.jpeg" alt="" srcset="" class="img-circle">
+                                                <span>卖报的小画家</span>
+                                            </a>
+                                        </div>
+                                        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                            <p>圣诞节是耶稣的诞辰，同时也是耶稣他妈玛利亚的受难日，在这一天不能说圣诞快乐，要说圣诞安康，这一天也被西方的安道尔、巴巴多斯岛等地区称为西方的寒食节，在这一天要吃饺子，取圣母玛利亚“教子”之意，时刻提醒我们教育后代的重要性。​</p>
+                                            <img src="https://oscimg.oschina.net/oscnet/up-mb48a3fu4oi9mhs6r55gx1hzw5lm11rk!/sq/200">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                            <a href="https://my.oschina.net/u/3417788">
+                                                <img src="https://static.oschina.net/uploads/user/1708/3417788_50.jpeg" alt="" srcset="" class="img-circle">
+                                            </a>
+                                            <span>卖报的小画家</span>
+                                        </div>
+                                        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                            <p>圣诞节是耶稣的诞辰，同时也是耶稣他妈玛利亚的受难日，在这一天不能说圣诞快乐，要说圣诞安康，这一天也被西方的安道尔、巴巴多斯岛等地区称为西方的寒食节，在这一天要吃饺子，取圣母玛利亚“教子”之意，时刻提醒我们教育后代的重要性。​</p>
+                                            <img src="https://oscimg.oschina.net/oscnet/up-mb48a3fu4oi9mhs6r55gx1hzw5lm11rk!/sq/200">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                            <a href="https://my.oschina.net/u/3417788">
+                                                <img src="https://static.oschina.net/uploads/user/1708/3417788_50.jpeg" alt="" srcset="" class="img-circle">
+                                            </a>
+                                            <span>卖报的小画家</span>
+                                        </div>
+                                        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                            <p>圣诞节是耶稣的诞辰，同时也是耶稣他妈玛利亚的受难日，在这一天不能说圣诞快乐，要说圣诞安康，这一天也被西方的安道尔、巴巴多斯岛等地区称为西方的寒食节，在这一天要吃饺子，取圣母玛利亚“教子”之意，时刻提醒我们教育后代的重要性。​</p>
+                                            <img src="https://oscimg.oschina.net/oscnet/up-mb48a3fu4oi9mhs6r55gx1hzw5lm11rk!/sq/200">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                            <a href="https://my.oschina.net/u/3417788">
+                                                <img src="https://static.oschina.net/uploads/user/1708/3417788_50.jpeg" alt="" srcset="" class="img-circle">
+                                            </a>
+                                            <span>卖报的小画家</span>
+                                        </div>
+                                        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                            <p>圣诞节是耶稣的诞辰，同时也是耶稣他妈玛利亚的受难日，在这一天不能说圣诞快乐，要说圣诞安康，这一天也被西方的安道尔、巴巴多斯岛等地区称为西方的寒食节，在这一天要吃饺子，取圣母玛利亚“教子”之意，时刻提醒我们教育后代的重要性。​</p>
+                                            <img src="https://oscimg.oschina.net/oscnet/up-mb48a3fu4oi9mhs6r55gx1hzw5lm11rk!/sq/200">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 问题 -->
+                        <div role="tabpanel" class="tab-pane" id="question">
+                            <div class="list-group">
+                                <a href="post.html?postId=1" class="list-group-item">
+                                    <h4 class="list-group-item-heading"><span>【升学就业】</span>2018 年终盘点：“年度爆款”的区块链真的结束了吗？</h4>
+                                </a>
+                                <a href="post.html?postId=1" class="list-group-item">
+                                    <h4 class="list-group-item-heading"><span>【升学就业】</span>2018 年终盘点：“年度爆款”的区块链真的结束了吗？</h4>
+                                </a>
+                                <a href="post.html?postId=1" class="list-group-item">
+                                    <h4 class="list-group-item-heading"><span>【升学就业】</span>2018 年终盘点：“年度爆款”的区块链真的结束了吗？</h4>
+                                </a>
+                                <a href="post.html?postId=1" class="list-group-item">
+                                    <h4 class="list-group-item-heading"><span>【升学就业】</span>2018 年终盘点：“年度爆款”的区块链真的结束了吗？</h4>
+                                </a>
+                                <a href="post.html?postId=1" class="list-group-item">
+                                    <h4 class="list-group-item-heading"><span>【升学就业】</span>2018 年终盘点：“年度爆款”的区块链真的结束了吗？</h4>
+                                </a>
+                            </div>
+                        </div>
+                        <!-- 回答 -->
+                        <div role="tabpanel" class="tab-pane" id="answer">
+                            <div class="list-group">
+                                <a href="question.html?questionId=1" class="list-group-item">
+                                    <h4 class="list-group-item-heading"><span>【升学就业】</span>2018 年终盘点：“年度爆款”的区块链真的结束了吗？</h4>
+                                </a>
+                                <a href="question.html?questionId=1" class="list-group-item">
+                                    <h4 class="list-group-item-heading"><span>【升学就业】</span>2018 年终盘点：“年度爆款”的区块链真的结束了吗？</h4>
+                                </a>
+                                <a href="question.html?questionId=1" class="list-group-item">
+                                    <h4 class="list-group-item-heading"><span>【升学就业】</span>2018 年终盘点：“年度爆款”的区块链真的结束了吗？</h4>
+                                </a>
+                                <a href="question.html?questionId=1" class="list-group-item">
+                                    <h4 class="list-group-item-heading"><span>【升学就业】</span>2018 年终盘点：“年度爆款”的区块链真的结束了吗？</h4>
+                                </a>
+                            </div>
+                        </div>
+                        <!-- 活动 -->
+                        <div role="tabpanel" class="tab-pane" id="activity">
+                            <ul class="nav nav-tabs nav-justified" role="tablist">
+                                <li role="presentation" class="active">
+                                    <a href="#activity-joined" aria-controls="home" role="tab" data-toggle="tab">参加的活动</a>
+                                </li>
+                                <li role="presentation">
+                                    <a href="#activity-created" aria-controls="profile" role="tab" data-toggle="tab">创建的活动</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <!-- 回答 -->
+                                <div role="tabpanel" class="tab-pane active" id="activity-joined">
+                                    <div class="list-group">
+                                        <a href="activity.html?id=activityId=1" class="list-group-item">
+                                            <h4 class="list-group-item-heading">南昌大学开源社区-2018git分享会</h4>
+                                        </a>
+                                        <a href="activity.html?id=activityId=2" class="list-group-item">
+                                            <h4 class="list-group-item-heading">南昌大学开源社区-2019git分享会</h4>
+                                        </a>
+                                        <a href="activity.html?id=activityId=3" class="list-group-item">
+                                            <h4 class="list-group-item-heading">南昌大学开源社区2019跨年活动</h4>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="activity-created">
+                                    <div class="list-group">
+                                        <a href="activity.html?id=activityId=1" class="list-group-item">
+                                            <h4 class="list-group-item-heading">南昌大学开源社区-2018git分享会</h4>
+                                        </a>
+                                        <a href="activity.html?id=activityId=2" class="list-group-item">
+                                            <h4 class="list-group-item-heading">南昌大学开源社区-2019git分享会</h4>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+
+        <!-- 渲染底部版权声明 -->
+        <script src="js/footer.js"></script>
+        <script src="js/jquery-3.3.1.js"></script>
+        <script src="js/bootstrap.js"></script>
+    </body>
+</html>

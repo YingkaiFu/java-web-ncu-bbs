@@ -1,6 +1,6 @@
 package com.ncu.strong.bbs.service;
 
-import com.ncu.strong.bbs.pojo.Tweet;
+import com.ncu.strong.bbs.po.Tweet;
 
 import java.util.List;
 
