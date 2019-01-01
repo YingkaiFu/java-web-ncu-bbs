@@ -1,16 +1,15 @@
 package com.ncu.strong.bbs.controller;
 
 
+import com.ncu.strong.bbs.dto.ResponseData;
 import com.ncu.strong.bbs.po.Question;
-import com.ncu.strong.bbs.service.QuestionServie;
+import com.ncu.strong.bbs.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
@@ -20,13 +19,9 @@ import java.util.List;
 public class QuestionController {
 
     @Autowired
-    private QuestionServie questionServie;
+    private QuestionService questionService;
     @Autowired
     private HttpSession session;
-    @Autowired
-    private HttpServletResponse response;
-    @Autowired
-    private HttpServletRequest request;
 
     /**
      * 发出提问 会员或者管理员权限
@@ -34,19 +29,27 @@ public class QuestionController {
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "",method = RequestMethod.POST)
-    public String insertQuestion(Question question) throws IOException {
+    @RequestMapping(value = "",
+            consumes = "application/json",
+            produces = "application/json",
+            method = RequestMethod.POST)
+    public ResponseData insertQuestion(Question question) throws IOException {
+        ResponseData responseData = new ResponseData();
         if(session.getAttribute("accountId") != null || session.getAttribute("admin")!=null) {
-            int num = questionServie.insert(question);
+            int num = questionService.insert(question);
             if (num == 0) {
-                return "提问失败";
+                responseData.setCode(0);
+                responseData.setMsg("提问失败");
             } else {
-                return "提问成功";
+                responseData.setCode(1);
+                responseData.setMsg("提问成功");
             }
         } else {
             //response.sendRedirect("user/login.html");
-            return "请先登录";
+            responseData.setCode(0);
+            responseData.setMsg("请先登录");
         }
+        return responseData;
     }
 
     /**
@@ -55,46 +58,78 @@ public class QuestionController {
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "{id}",method = RequestMethod.DELETE)
-    public String deleteQuestion(@PathVariable("id")Integer id) throws IOException {
+    @RequestMapping(value = "{id}",
+            consumes = "application/json",
+            produces = "application/json",
+            method = RequestMethod.DELETE)
+    public ResponseData deleteQuestion(@PathVariable("id")Integer id) throws IOException {
+        ResponseData responseData = new ResponseData();
         if(session.getAttribute("accountId") != null || session.getAttribute("admin")!=null) {
-            int num = questionServie.delete(id);
+            int num = questionService.delete(id);
             if (num == 0) {
-                return "删除失败";
+                responseData.setCode(0);
+                responseData.setMsg("删除失败");
             } else {
-                return "删除成功";
+                responseData.setCode(1);
+                responseData.setMsg("删除成功");
             }
         } else {
             //response.sendRedirect("user/login.html");
-            return "请先登录";
+            responseData.setCode(0);
+            responseData.setMsg("请先登录");
         }
+        return responseData;
     }
 
     /**
      * 最热提问 任何人
      * @return
      */
-    @RequestMapping(value = "host",method = RequestMethod.GET)
-    public List<Question> getAllQuestion() {
-        return questionServie.getHostQuestion();
+    @RequestMapping(value = "host",
+            consumes = "application/json",
+            produces = "application/json",
+            method = RequestMethod.GET)
+    public ResponseData getAllQuestion() {
+        ResponseData responseData = new ResponseData();
+        List list = questionService.getHostQuestion();
+        responseData.setCode(1);
+        responseData.setMsg("获取最热问答成功");
+        responseData.getData().put("questions",list);
+        return responseData;
     }
 
     /**
      * 最新问题
      * @return
      */
-    @RequestMapping(value = "latest",method = RequestMethod.GET)
-    public List getLatestQuestion() {
-        return questionServie.getLatestQuestion();
+    @RequestMapping(value = "latest",
+            consumes = "application/json",
+            produces = "application/json",
+            method = RequestMethod.GET)
+    public ResponseData getLatestQuestion() {
+        ResponseData responseData = new ResponseData();
+        List list = questionService.getLatestQuestion();
+        responseData.setCode(1);
+        responseData.setMsg("获取最新问答成功");
+        responseData.getData().put("questions",list);
+        return responseData;
     }
     /**
      * 查看某一提问 任何人
      * @param id
      * @return
      */
-    @RequestMapping(value = "{id}",method = RequestMethod.GET)
-    public Question getQuestionById(@PathVariable("id")Integer id) {
-        return questionServie.getQuestionById(id);
+    @RequestMapping(value = "{id}",
+            consumes = "application/json",
+            produces = "application/json",
+            method = RequestMethod.GET)
+    public ResponseData getQuestionById(@PathVariable("id")Integer id) {
+        ResponseData responseData = new ResponseData();
+        Question question = questionService.getQuestionById(id);
+        responseData.setCode(1);
+        responseData.setMsg("获取成功");
+        responseData.getData().put("question",question);
+        return responseData;
     }
 
     /**
@@ -103,18 +138,27 @@ public class QuestionController {
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "",method = RequestMethod.PUT)
-    public String updateQuestion(Question question) throws IOException {
+    @RequestMapping(value = "",
+            consumes = "application/json",
+            produces = "application/json",
+            method = RequestMethod.PUT)
+    public ResponseData updateQuestion(Question question) throws IOException {
+        ResponseData responseData = new ResponseData();
         if(session.getAttribute("accountId") != null || session.getAttribute("admin")!=null) {
-            int num = questionServie.updateByPrimaryKeySelective(question);
+            int num = questionService.updateByPrimaryKeySelective(question);
             if (num == 0) {
-                return "更新失败";
+                responseData.setCode(0);
+                responseData.setMsg("更新失败");
             } else {
-                return "更新成功";
+                responseData.setCode(1);
+                responseData.setMsg("更新成功");
+                return responseData;
             }
         } else {
             //response.sendRedirect("user/login.html");
-            return "请先登录";
+            responseData.setCode(0);
+            responseData.setMsg("请先登录");
         }
+        return responseData;
     }
 }

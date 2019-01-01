@@ -4,7 +4,7 @@ import com.ncu.strong.bbs.po.Question;
 
 import java.util.List;
 
-public interface QuestionServie {
+public interface QuestionService {
 
     int insert(Question record);
 
