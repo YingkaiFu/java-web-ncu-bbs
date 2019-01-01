@@ -1,5 +1,6 @@
 package com.ncu.strong.bbs.controller;
 
+import com.ncu.strong.bbs.dto.ResponseData;
 import com.ncu.strong.bbs.po.Post;
 import com.ncu.strong.bbs.po.User;
 import com.ncu.strong.bbs.service.PostService;
@@ -12,76 +13,78 @@ import java.util.List;
 @RestController
 @RequestMapping(value={"/post"})
 public class PostController {
+    private final PostService postService;
+
+    private final HttpSession session;
 
     @Autowired
-    private PostService postService;
-
-
-    @Autowired
-    private HttpSession session;
+    public PostController(PostService postService, HttpSession session) {
+        this.postService = postService;
+        this.session = session;
+    }
 
     /**
      * 获取最热帖
-     * @return
      */
     @RequestMapping(value={"/getHostPosts"},produces = {"application/json;charset=UTF-8"},method = RequestMethod.GET)
-    public List getHotPosts(){
+    public List<Post> getHotPosts(){
        return postService.findHostPosts();
     }
 
     /**
      * 获取最新贴
-     * @return
      */
     @RequestMapping(value={"/getNewestPosts"},produces = {"application/json;charset=UTF-8"},method = RequestMethod.GET)
-    public List getNewPosts(){
+    public List<Post> getNewPosts(){
         return postService.findNewestPosts();
     }
 
     /**
      * 添加帖子
-     * @param post
-     * @return
      */
     @PostMapping(value={"/addPost"})
-    public String addPost(@RequestBody Post post){
+    public ResponseData addPost(@RequestBody Post post){
+        ResponseData responseData = new ResponseData();
         if(session.getAttribute("accountId") != null) {
             if (post != null) {
                 if (postService.addPost(post) == 1) {
-                    return "添加成功";
+                    responseData.setCode(1);
+                    responseData.setMsg("添加成功");
                 } else {
-                    return "添加失败";
+                    responseData.setCode(0);
+                    responseData.setMsg("添加失败");
                 }
             }
-            return "帖子为空";
+            responseData.setCode(0);
+            responseData.setMsg("帖子为空");
         }
-        return "请登陆";
+
+        return responseData;
     }
 
     /**
      * 删除帖子
-     * @param id
-     * @return
      */
     @PostMapping(value={"/deletePost"})
-    public String  deletePost(@RequestBody Integer id){
+    public ResponseData  deletePost(@RequestBody Integer id){
+        ResponseData responseData = new ResponseData();
         if(session.getAttribute("accountId") != null) {
             Integer accountId = (Integer) session.getAttribute("accountId");
             Post post = postService.findPostById(id);
             if (accountId == post.getAuthorId()) {
                 if (postService.deletePostById(id) == 1) {
-                    return "删除成功";
+                    responseData.setCode(1);
+                    responseData.setMsg("删除成功");
+                } else {
+                    responseData.setCode(0);
+                    responseData.setMsg("删除失败");
                 }
-                return "删除失败";
+            } else {
+                responseData.setCode(0);
+                responseData.setMsg("没有权限");
             }
         }
-        if(session.getAttribute("admin") != null){
-            if (postService.deletePostById(id) == 1) {
-                return "删除成功";
-            }
-            return "删除失败";
-        }
-        return "没有权限";
+        return responseData;
     }
 
     /**
@@ -218,5 +221,4 @@ public class PostController {
     public List getHotPosts(@RequestBody Integer setionId){
         return postService.getHotPosts(setionId);
     }
-
 }

@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 public class ActivityEnterServiceImpl implements ActivityEnterService {
 
     @Autowired
-    private ActivityEnterMapper activityEnterDao;
+    private ActivityEnterMapper activityEnterMapper;
 
     @Override
     public int insert(ActivityEnter record) {
-        return activityEnterDao.insert(record);
+        return activityEnterMapper.insert(record);
     }
 }

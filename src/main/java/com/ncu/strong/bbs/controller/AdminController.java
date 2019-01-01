@@ -4,6 +4,7 @@ import com.ncu.strong.bbs.dto.ResponseData;
 import com.ncu.strong.bbs.po.Admin;
 import com.ncu.strong.bbs.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,32 +17,17 @@ import java.io.IOException;
 @RestController
 @RequestMapping(value = "/admin")
 public class AdminController {
-
-    @Autowired
-    HttpSession session;
-
     @Autowired
     AdminService adminService;
 
-    @Autowired
-    HttpServletResponse response;
-
-    @Autowired
-    HttpServletRequest request;
-
-
     /**
      * 管理员登陆
-     * @param admin 传入的admin对象
-     * @return
-     * @throws IOException
      */
     @RequestMapping(value = "/login",
             consumes = "application/json",
             produces = "application/json",
             method = RequestMethod.POST)
-    public ResponseData login(Admin admin) throws IOException {
-
+    public ResponseData login(@RequestBody Admin admin, HttpSession session) {
         String adminName = "strong";
         String adminPassword = "StrongAdmin";
         ResponseData responseData = new ResponseData();
@@ -61,16 +47,13 @@ public class AdminController {
 
     /**
      * 管理员退出登录
-     * @return
-     * @throws IOException
      */
     @RequestMapping(value = "/logout",
             consumes = "application/json",
             produces = "application/json",
             method = RequestMethod.GET)
-    public ResponseData logout() throws IOException {
+    public ResponseData logout(HttpSession session) throws IOException {
         ResponseData responseData = new ResponseData();
-
         if(session != null && session.getAttribute("admin") != null) {
             session.removeAttribute("admin");
             //response.sendRedirect("admin/login.html");

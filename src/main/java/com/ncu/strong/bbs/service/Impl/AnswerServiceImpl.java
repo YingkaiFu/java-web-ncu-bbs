@@ -10,26 +10,26 @@ import org.springframework.stereotype.Service;
 public class AnswerServiceImpl implements AnswerService {
 
     @Autowired
-    private AnswerMapper answerDao;
+    private AnswerMapper answerMapper;
 
     @Override
     public int insert(Answer record) {
-        return answerDao.insert(record);
+        return answerMapper.insert(record);
     }
 
     @Override
     public int deleteByPrimaryKey(Integer id) {
-        return answerDao.deleteByPrimaryKey(id);
+        return answerMapper.deleteByPrimaryKey(id);
     }
 
     @Override
     public int updateByPrimaryKeySelective(Answer record) {
-        return answerDao.updateByPrimaryKeySelective(record);
+        return answerMapper.updateByPrimaryKeySelective(record);
     }
 
     @Override
     public Answer getAnswerById(Integer id) {
-        return answerDao.getAnswerById(id);
+        return answerMapper.getAnswerById(id);
     }
 
 }

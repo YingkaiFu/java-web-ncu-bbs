@@ -4,6 +4,7 @@ import com.ncu.strong.bbs.dto.ResponseData;
 import com.ncu.strong.bbs.po.ActivityEnter;
 import com.ncu.strong.bbs.service.ActivityEnterService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,23 +18,21 @@ import java.io.IOException;
 @RequestMapping(value = "enter")
 public class ActivityEnterController {
 
-    @Autowired
-    private ActivityEnterService activityEnterService;
+    private final ActivityEnterService activityEnterService;
 
     @Autowired
-    HttpSession session;
+    public ActivityEnterController(ActivityEnterService activityEnterService) {
+        this.activityEnterService = activityEnterService;
+    }
 
     /**
      * 报名活动 会员或者管理员权限
-     * @param activityEnter
-     * @return
-     * @throws IOException
      */
     @RequestMapping(value = "",
             consumes = "application/json",
             produces = "application/json",
             method = RequestMethod.POST)
-    public ResponseData insertEnter(ActivityEnter activityEnter) throws IOException {
+    public ResponseData insertEnter(@RequestBody ActivityEnter activityEnter, HttpSession session) {
         ResponseData responseData = new ResponseData();
         if(session.getAttribute("accountId") != null ||
                 session.getAttribute("admin") != null) {
