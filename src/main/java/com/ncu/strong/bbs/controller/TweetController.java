@@ -1,5 +1,6 @@
 package com.ncu.strong.bbs.controller;
 
+import com.ncu.strong.bbs.dto.ResponseData;
 import com.ncu.strong.bbs.po.Tweet;
 import com.ncu.strong.bbs.service.TweetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,29 +21,40 @@ public class TweetController {
     @Autowired
     private HttpSession session;
 
-    @Autowired
-    private HttpServletRequest request;
-
-    @Autowired
-    private HttpServletResponse response;
     /**
      * 根据动弹id查询动弹 所有人
      * @param id
      * @return
      */
-    @RequestMapping(value = "/{id}", produces = "application/json;charset=UTF-8",method = RequestMethod.GET)
-    public Tweet getTweetById(@PathVariable("id") Integer id) {
-        return tweetService.getTweetById(id);
+    @RequestMapping(value = "/{id}",
+            consumes = "application/json",
+            produces = "application/json",
+            method = RequestMethod.GET)
+    public ResponseData getTweetById(@PathVariable("id") Integer id) {
+
+        ResponseData responseData = new ResponseData();
+        Tweet tweet = tweetService.getTweetById(id);
+        responseData.setCode(1);
+        responseData.setMsg("获取动弹成功");
+        responseData.getData().put("tweet",tweet);
+        return responseData;
     }
 
     /**
      * 查询所有动弹 所有人
      * @return
      */
-    @RequestMapping(value = "",produces = "application/json;charset=UTF-8",method = RequestMethod.GET)
-    public Object getAllTweets() {
+    @RequestMapping(value = "",
+            consumes = "application/json",
+            produces = "application/json",
+            method = RequestMethod.GET)
+    public ResponseData getAllTweets() {
+        ResponseData responseData = new ResponseData();
         List list = tweetService.getAllTweets();
-        return list;
+        responseData.setCode(1);
+        responseData.setMsg("获取成功");
+        responseData.getData().put("tweets",list);
+        return responseData;
     }
 
     /**
@@ -50,19 +62,27 @@ public class TweetController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/delete/{id}",method=RequestMethod.DELETE)
-    public String deleteTweet(@PathVariable("id")Integer id) throws IOException {
+    @RequestMapping(value = "/delete/{id}",
+            consumes = "application/json",
+            produces = "application/json",
+            method=RequestMethod.DELETE)
+    public ResponseData deleteTweet(@PathVariable("id")Integer id) throws IOException {
+        ResponseData responseData = new ResponseData();
         if(session.getAttribute("accountId") != null || session.getAttribute("admin")!=null) {
             int num = tweetService.deleteByPrimaryKey(id);
             if (num == 0) {
-                return "删除失败";
+                responseData.setCode(0);
+                responseData.setMsg("删除失败");
             } else {
-                return "删除成功";
+                responseData.setCode(1);
+                responseData.setMsg("删除成功");
             }
         } else {
             //response.sendRedirect("user/login.html");
-            return "请先登录";
+            responseData.setCode(0);
+            responseData.setMsg("请先登录");
         }
+        return responseData;
     }
 
     /**
@@ -71,19 +91,27 @@ public class TweetController {
      * @return
      */
 
-    @RequestMapping(value = "",method = RequestMethod.POST)
-    public String insertTweet(Tweet tweet) throws IOException {
+    @RequestMapping(value = "",
+            consumes = "application/json",
+            produces = "application/json",
+            method = RequestMethod.POST)
+    public ResponseData insertTweet(Tweet tweet) throws IOException {
+        ResponseData responseData = new ResponseData();
         if(session.getAttribute("accountId") != null || session.getAttribute("admin")!=null) {
             int num = tweetService.insertSelective(tweet);
             if (num == 0) {
-                return "发布失败";
+                responseData.setCode(0);
+                responseData.setMsg("发布失败");
             } else {
-                return "发布成功";
+                responseData.setCode(1);
+                responseData.setMsg("发布成功");
             }
         } else {
             //response.sendRedirect("user/login.html");
-            return "请先登录";
+            responseData.setCode(0);
+            responseData.setMsg("请先登录");
         }
+        return responseData;
     }
 
     /**
@@ -91,19 +119,27 @@ public class TweetController {
      * @param record
      * @return
      */
-    @RequestMapping(value = "",method = RequestMethod.PUT)
-    public String updateTweet(Tweet record) throws IOException {
+    @RequestMapping(value = "",
+            consumes = "application/json",
+            produces = "application/json",
+            method = RequestMethod.PUT)
+    public ResponseData updateTweet(Tweet record) throws IOException {
+        ResponseData responseData = new ResponseData();
         if(session.getAttribute("accountId") != null || session.getAttribute("admin")!=null) {
             int num = tweetService.updateByPrimaryKeySelective(record);
             if (num == 0) {
-                return "更新失败";
+                responseData.setCode(0);
+                responseData.setMsg("更新失败");
             } else {
-                return "更新成功";
+                responseData.setCode(1);
+                responseData.setMsg("更新成功");
             }
         } else {
             //response.sendRedirect("user/login.html");
-            return "请先登录";
+            responseData.setCode(0);
+            responseData.setMsg("请先登录");
         }
+        return responseData;
     }
 
 }

@@ -249,14 +249,20 @@ public class UserController {
             value = "tweet/{id}",
             produces = "application/json",
             method = RequestMethod.GET)
-    public Object getTweetsByUser(@PathVariable("id")Integer id, HttpSession session) {
+    public ResponseData getTweetsByUser(
+            @PathVariable("id")Integer id, HttpSession session) {
+        ResponseData responseData = new ResponseData();
         if(session.getAttribute("accountId") != null ||
                 session.getAttribute("admin") != null) {
-            return userService.getTweetsByUser(id);
+            User tweets = userService.getTweetsByUser(id);
+            responseData.setCode(1);
+            responseData.setMsg("获取用户动弹成功");
+            responseData.getData().put("tweets",tweets);
         } else {
-            return "请先登录！";
+            responseData.setCode(0);
+            responseData.setMsg("请先登录");
         }
-
+        return responseData;
     }
 
     /**
@@ -267,13 +273,21 @@ public class UserController {
             value = "question/{id}",
             consumes = "application/json",
             method = RequestMethod.GET)
-    public Object getQuestionsByUser(@PathVariable("id")Integer id, HttpSession session) {
+    public ResponseData getQuestionsByUser(
+            @PathVariable("id")Integer id, HttpSession session) {
+        ResponseData responseData = new ResponseData();
         if(session.getAttribute("accountId") != null ||
                 session.getAttribute("admin") != null) {
-            return userService.getQuestionsByUser(id);
+            User questions =  userService.getQuestionsByUser(id);
+            responseData.setCode(1);
+            responseData.getData().put("questions",questions);
+            responseData.setMsg("获取用户提问成功");
+
         } else {
-            return "请先登录！";
+            responseData.setCode(0);
+            responseData.setMsg("请先登录");
         }
+        return responseData;
     }
 
     /**
@@ -284,15 +298,22 @@ public class UserController {
             value = "answer/{id}",
             consumes = "application/json",
             method = RequestMethod.GET)
-    public Object getAnswerByUser(@PathVariable("id") Integer id, HttpSession session) {
+    public ResponseData getAnswerByUser(
+            @PathVariable("id") Integer id, HttpSession session) {
+        ResponseData responseData = new ResponseData();
         if(session.getAttribute("accountId") != null ||
                 session.getAttribute("admin") != null) {
-            return userService.getAnswersByUser(id);
+            User answers = userService.getAnswersByUser(id);
+            responseData.setCode(1);
+            responseData.setMsg("获取用户答案成功");
+            responseData.getData().put("answers",answers);
 
         } else {
             //response.sendRedirect("/user/login.html");
-            return "请先登录！";
+            responseData.setCode(0);
+            responseData.setMsg("请先登录");
         }
+        return responseData;
     }
 
 
@@ -300,29 +321,47 @@ public class UserController {
      * 功能：查看某用户所创建的所有活动
      * 权限：会员或者管理员权限
      */
-    @RequestMapping(value = "create/{id}",method = RequestMethod.GET)
+    @RequestMapping(value = "create/{id}",
+            consumes = "application/json",
+            produces = "application/json",
+            method = RequestMethod.GET)
     public Object getCreateActivity(@PathVariable("id") Integer id, HttpSession session) {
+        ResponseData responseData = new ResponseData();
         if(session.getAttribute("accountId") != null ||
                 session.getAttribute("admin") != null) {
-            return userService.getCreateActivity(id);
+            User create = userService.getCreateActivity(id);
+            responseData.setCode(1);
+            responseData.setMsg("获取用户报名活动成功");
+            responseData.getData().put("userCreate",create);
         } else {
             //response.sendRedirect("user/login.html");
-            return "请先登录";
+            responseData.setCode(0);
+            responseData.setMsg("请先登录");
         }
+        return responseData;
     }
 
     /**
      * 功能：查看某用户参与的所有活动
      * 权限：会员或者管理员权限
      */
-    @RequestMapping(value = "enter/{id}",method = RequestMethod.GET)
-    public Object getEnterActivity(@PathVariable("id") Integer id, HttpSession session) {
+    @RequestMapping(value = "enter/{id}",
+            consumes = "application/json",
+            produces = "application/json",
+            method = RequestMethod.GET)
+    public ResponseData getEnterActivity(@PathVariable("id") Integer id, HttpSession session) {
+        ResponseData responseData = new ResponseData();
         if(session.getAttribute("accountId") != null ||
                 session.getAttribute("admin") != null) {
-            return userService.getEnterActivity(id);
+            User enter = userService.getEnterActivity(id);
+            responseData.setCode(1);
+            responseData.setMsg("获取用户报名活动成功");
+            responseData.getData().put("userEnter",enter);
         } else {
             //response.sendRedirect("user/login.html");
-            return "请先登录";
+            responseData.setCode(0);
+            responseData.setMsg("请先登录");
         }
+        return responseData;
     }
 }

@@ -1,5 +1,6 @@
 package com.ncu.strong.bbs.controller;
 
+import com.ncu.strong.bbs.dto.ResponseData;
 import com.ncu.strong.bbs.po.Activity;
 import com.ncu.strong.bbs.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,30 +23,34 @@ public class ActivityController {
 
     @Autowired
     HttpSession session;
-    @Autowired
-    HttpServletResponse response;
-    @Autowired
-    HttpServletRequest request;
 
     /**
      * 创建活动 会员或者管理员权限
      * @param activity
      * @return
      */
-    @RequestMapping(value = "",method = RequestMethod.POST)
-    public String insertActivity(Activity activity) throws IOException {
+    @RequestMapping(value = "",
+            consumes = "application/json",
+            produces = "application/json",
+            method = RequestMethod.POST)
+    public ResponseData insertActivity(Activity activity) throws IOException {
+        ResponseData responseData = new ResponseData();
         if(session.getAttribute("accountId") != null ||
                 session.getAttribute("admin") != null) {
             int num = activityService.insert(activity);
             if (num == 0) {
-                return "创建失败";
+                responseData.setCode(0);
+                responseData.setMsg("创建失败");
             } else {
-                return "创建成功";
+                responseData.setCode(1);
+                responseData.setMsg("创建成功");
             }
         } else {
             //response.sendRedirect("user/login.html");
-            return "请先登录";
+            responseData.setCode(0);
+            responseData.setMsg("请先登录");
         }
+        return responseData;
     }
 
     /**
@@ -53,20 +58,28 @@ public class ActivityController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "{id}",method = RequestMethod.DELETE)
-    public String deleteActivity(@PathVariable("id")Integer id) throws IOException {
+    @RequestMapping(value = "{id}",
+            consumes = "application/json",
+            produces = "application/json",
+            method = RequestMethod.DELETE)
+    public ResponseData deleteActivity(@PathVariable("id")Integer id) throws IOException {
+        ResponseData responseData = new ResponseData();
         if(session.getAttribute("accountId") != null ||
                 session.getAttribute("admin") != null) {
             int num = activityService.deleteByPrimaryKey(id);
             if (num == 0) {
-                return "删除失败";
+                responseData.setCode(0);
+                responseData.setMsg("删除失败");
             } else {
-                return "删除成功";
+                responseData.setCode(1);
+                responseData.setMsg("删除成功");
             }
         } else {
             //response.sendRedirect("user/login.html");
-            return "请先登录";
+            responseData.setCode(0);
+            responseData.setMsg("请先登录");
         }
+        return responseData;
     }
 
     /**
@@ -74,20 +87,28 @@ public class ActivityController {
      * @param activity
      * @return
      */
-    @RequestMapping(value = "",method = RequestMethod.PUT)
-    public String deleteActivity(Activity activity) throws IOException {
+    @RequestMapping(value = "",
+            consumes = "application/json",
+            produces = "application/json",
+            method = RequestMethod.PUT)
+    public ResponseData deleteActivity(Activity activity) throws IOException {
+        ResponseData responseData = new ResponseData();
         if(session.getAttribute("accountId") != null ||
                 session.getAttribute("admin") != null) {
             int num = activityService.updateByPrimaryKeySelective(activity);
             if (num == 0) {
-                return "更新失败";
+                responseData.setCode(0);
+                responseData.setMsg("更新失败");
             } else {
-                return "更新成功";
+                responseData.setCode(1);
+                responseData.setMsg("更新成功");
             }
         } else {
             //response.sendRedirect("user/login.html");
-            return "请先登录";
+            responseData.setCode(0);
+            responseData.setMsg("请先登录");
         }
+        return responseData;
     }
 
     /**
@@ -95,27 +116,51 @@ public class ActivityController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "{id}",method = RequestMethod.GET)
-    public Object getActivityById(@PathVariable("id")Integer id) {
-        return activityService.getActivityById(id);
+    @RequestMapping(value = "{id}",
+            consumes = "application/json",
+            produces = "application/json",
+            method = RequestMethod.GET)
+    public ResponseData getActivityById(@PathVariable("id")Integer id) {
+        ResponseData responseData = new ResponseData();
+        Activity activity = activityService.getActivityById(id);
+        responseData.setCode(1);
+        responseData.setMsg("获取活动成功");
+        responseData.getData().put("activity",activity);
+        return responseData;
     }
 
     /**
      * 查看最热活动 所有人
      * @return
      */
-    @RequestMapping(value = "/host", method = RequestMethod.GET)
-    public List getHostActivity() {
-        return activityService.getHostActivity();
+    @RequestMapping(value = "/host",
+            consumes = "application/json",
+            produces = "application/json",
+            method = RequestMethod.GET)
+    public ResponseData getHostActivity() {
+        ResponseData responseData = new ResponseData();
+        List list = activityService.getHostActivity();
+        responseData.setCode(1);
+        responseData.setMsg("获取最热活动成功");
+        responseData.getData().put("activities",list);
+        return responseData;
     }
 
     /**
      * 查看最新活动 所有人
      * @return
      */
-    @RequestMapping(value = "/latest",method = RequestMethod.GET)
-    public Object getLatestActivity() {
-        return activityService.getLatestActivity();
+    @RequestMapping(value = "/latest",
+            consumes = "application/json",
+            produces = "application/json",
+            method = RequestMethod.GET)
+    public ResponseData getLatestActivity() {
+        ResponseData responseData = new ResponseData();
+        List list = activityService.getLatestActivity();
+        responseData.setCode(1);
+        responseData.setMsg("获取最新活动成功");
+        responseData.getData().put("activities",list);
+        return responseData;
     }
 
 }

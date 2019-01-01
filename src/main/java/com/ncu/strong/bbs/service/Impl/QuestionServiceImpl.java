@@ -2,14 +2,14 @@ package com.ncu.strong.bbs.service.Impl;
 
 import com.ncu.strong.bbs.dao.QuestionMapper;
 import com.ncu.strong.bbs.po.Question;
-import com.ncu.strong.bbs.service.QuestionServie;
+import com.ncu.strong.bbs.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class QuestionServiceImpl implements QuestionServie {
+public class QuestionServiceImpl implements QuestionService {
 
     @Autowired
     private QuestionMapper questionDao;

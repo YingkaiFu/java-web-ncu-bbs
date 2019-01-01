@@ -1,5 +1,6 @@
 package com.ncu.strong.bbs.controller;
 
+import com.ncu.strong.bbs.dto.ResponseData;
 import com.ncu.strong.bbs.po.Admin;
 import com.ncu.strong.bbs.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,20 +36,27 @@ public class AdminController {
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public String login(Admin admin) throws IOException {
+    @RequestMapping(value = "/login",
+            consumes = "application/json",
+            produces = "application/json",
+            method = RequestMethod.POST)
+    public ResponseData login(Admin admin) throws IOException {
 
         String adminName = "strong";
         String adminPassword = "StrongAdmin";
+        ResponseData responseData = new ResponseData();
 
         if(adminName.equals(admin.getName()) && adminPassword.equals(admin.getPassword())) {
             session.setAttribute("admin",admin);
             //response.sendRedirect("admin/index.html");
-            return "管理员登录成功";
+            responseData.setCode(1);
+            responseData.setMsg("管理员登录成功");
         }
         else {
-            return "账号或者密码错误";
+            responseData.setCode(0);
+            responseData.setMsg("账号或者密码错误");
         }
+        return responseData;
     }
 
     /**
@@ -56,18 +64,24 @@ public class AdminController {
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "/logout",method = RequestMethod.GET)
-    public Object logout() throws IOException {
+    @RequestMapping(value = "/logout",
+            consumes = "application/json",
+            produces = "application/json",
+            method = RequestMethod.GET)
+    public ResponseData logout() throws IOException {
+        ResponseData responseData = new ResponseData();
 
         if(session != null && session.getAttribute("admin") != null) {
             session.removeAttribute("admin");
             //response.sendRedirect("admin/login.html");
-            return "退出登录成功";
+            responseData.setCode(1);
+            responseData.setMsg("退出登录成功");
         }
         else {
-            return "退出登录失败";
+            responseData.setCode(0);
+            responseData.setMsg("退出登录失败");
         }
-
+        return responseData;
 
     }
 }

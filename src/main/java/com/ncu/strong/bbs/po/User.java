@@ -30,9 +30,9 @@ public class User {
 
     private List<Answer> answers;
 
-    private List<Activity> created;
+    private List<Activity> create;
 
-    private List<Activity> joined;
+    private List<Activity> enter;
 
     public User() {}
 
@@ -52,8 +52,8 @@ public class User {
                 ", tweets=" + tweets +
                 ", questions=" + questions +
                 ", answers=" + answers +
-                ", created=" + created +
-                ", joined=" + joined +
+                ", created=" + create +
+                ", joined=" + enter +
                 '}';
     }
 
@@ -161,19 +161,19 @@ public class User {
         this.answers = answers;
     }
 
-    public List<Activity> getCreated() {
-        return created;
+    public List<Activity> getCreate() {
+        return create;
     }
 
-    public void setCreated(List<Activity> created) {
-        this.created = created;
+    public void setCreate(List<Activity> create) {
+        this.create = create;
     }
 
-    public List<Activity> getJoined() {
-        return joined;
+    public List<Activity> getEnter() {
+        return enter;
     }
 
-    public void setJoined(List<Activity> joined) {
-        this.joined = joined;
+    public void setEnter(List<Activity> enter) {
+        this.enter = enter;
     }
 }

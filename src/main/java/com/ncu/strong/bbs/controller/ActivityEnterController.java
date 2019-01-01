@@ -1,5 +1,6 @@
 package com.ncu.strong.bbs.controller;
 
+import com.ncu.strong.bbs.dto.ResponseData;
 import com.ncu.strong.bbs.po.ActivityEnter;
 import com.ncu.strong.bbs.service.ActivityEnterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,31 +23,33 @@ public class ActivityEnterController {
     @Autowired
     HttpSession session;
 
-    @Autowired
-    HttpServletRequest request;
-
-    @Autowired
-    HttpServletResponse response;
-
     /**
      * 报名活动 会员或者管理员权限
      * @param activityEnter
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "",method = RequestMethod.POST)
-    public String insertEnter(ActivityEnter activityEnter) throws IOException {
+    @RequestMapping(value = "",
+            consumes = "application/json",
+            produces = "application/json",
+            method = RequestMethod.POST)
+    public ResponseData insertEnter(ActivityEnter activityEnter) throws IOException {
+        ResponseData responseData = new ResponseData();
         if(session.getAttribute("accountId") != null ||
                 session.getAttribute("admin") != null) {
             int num = activityEnterService.insert(activityEnter);
             if (num == 0) {
-                return "报名失败";
+                responseData.setCode(0);
+                responseData.setMsg("报名失败");
             } else {
-                return "报名成功";
+                responseData.setCode(1);
+                responseData.setMsg("报名成功");
             }
         } else {
             //response.sendRedirect("user/login.html");
-            return "请先登录";
+            responseData.setCode(0);
+            responseData.setMsg("请先登录");
         }
+        return responseData;
     }
 }
