@@ -4,13 +4,8 @@ import com.ncu.strong.bbs.dto.ResponseData;
 import com.ncu.strong.bbs.po.Activity;
 import com.ncu.strong.bbs.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
@@ -18,22 +13,21 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/activity")
 public class ActivityController {
-    @Autowired
-    private ActivityService activityService;
+    private final ActivityService activityService;
 
     @Autowired
-    HttpSession session;
+    public ActivityController(ActivityService activityService) {
+        this.activityService = activityService;
+    }
 
     /**
      * 创建活动 会员或者管理员权限
-     * @param activity
-     * @return
      */
     @RequestMapping(value = "",
             consumes = "application/json",
             produces = "application/json",
             method = RequestMethod.POST)
-    public ResponseData insertActivity(Activity activity) throws IOException {
+    public ResponseData insertActivity(@RequestBody Activity activity, HttpSession session) {
         ResponseData responseData = new ResponseData();
         if(session.getAttribute("accountId") != null ||
                 session.getAttribute("admin") != null) {
@@ -46,7 +40,6 @@ public class ActivityController {
                 responseData.setMsg("创建成功");
             }
         } else {
-            //response.sendRedirect("user/login.html");
             responseData.setCode(0);
             responseData.setMsg("请先登录");
         }
@@ -55,14 +48,12 @@ public class ActivityController {
 
     /**
      * 删除活动 会员或者管理员权限
-     * @param id
-     * @return
      */
     @RequestMapping(value = "{id}",
             consumes = "application/json",
             produces = "application/json",
             method = RequestMethod.DELETE)
-    public ResponseData deleteActivity(@PathVariable("id")Integer id) throws IOException {
+    public ResponseData deleteActivity(@PathVariable("id")Integer id, HttpSession session) {
         ResponseData responseData = new ResponseData();
         if(session.getAttribute("accountId") != null ||
                 session.getAttribute("admin") != null) {
@@ -84,14 +75,12 @@ public class ActivityController {
 
     /**
      * 更新活动 会员或者管理员权限
-     * @param activity
-     * @return
      */
     @RequestMapping(value = "",
             consumes = "application/json",
             produces = "application/json",
             method = RequestMethod.PUT)
-    public ResponseData deleteActivity(Activity activity) throws IOException {
+    public ResponseData deleteActivity(@RequestBody Activity activity, HttpSession session) throws IOException {
         ResponseData responseData = new ResponseData();
         if(session.getAttribute("accountId") != null ||
                 session.getAttribute("admin") != null) {
@@ -113,8 +102,6 @@ public class ActivityController {
 
     /**
      * 查看某一具体活动 所有人
-     * @param id
-     * @return
      */
     @RequestMapping(value = "{id}",
             consumes = "application/json",
@@ -131,7 +118,6 @@ public class ActivityController {
 
     /**
      * 查看最热活动 所有人
-     * @return
      */
     @RequestMapping(value = "/host",
             consumes = "application/json",
@@ -148,7 +134,6 @@ public class ActivityController {
 
     /**
      * 查看最新活动 所有人
-     * @return
      */
     @RequestMapping(value = "/latest",
             consumes = "application/json",
@@ -162,5 +147,4 @@ public class ActivityController {
         responseData.getData().put("activities",list);
         return responseData;
     }
-
 }

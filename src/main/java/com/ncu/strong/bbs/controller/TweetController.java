@@ -95,7 +95,7 @@ public class TweetController {
             consumes = "application/json",
             produces = "application/json",
             method = RequestMethod.POST)
-    public ResponseData insertTweet(Tweet tweet) throws IOException {
+    public ResponseData insertTweet(@RequestBody Tweet tweet) throws IOException {
         ResponseData responseData = new ResponseData();
         if(session.getAttribute("accountId") != null || session.getAttribute("admin")!=null) {
             int num = tweetService.insertSelective(tweet);
@@ -123,7 +123,7 @@ public class TweetController {
             consumes = "application/json",
             produces = "application/json",
             method = RequestMethod.PUT)
-    public ResponseData updateTweet(Tweet record) throws IOException {
+    public ResponseData updateTweet(@RequestBody Tweet record) throws IOException {
         ResponseData responseData = new ResponseData();
         if(session.getAttribute("accountId") != null || session.getAttribute("admin")!=null) {
             int num = tweetService.updateByPrimaryKeySelective(record);
@@ -141,5 +141,4 @@ public class TweetController {
         }
         return responseData;
     }
-
 }

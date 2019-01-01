@@ -13,7 +13,7 @@ import java.util.List;
 public class SetionServiceImpl implements SetionService {
 
     @Autowired
-    private SetionMapper setionDao;
+    private SetionMapper setionMapper;
 
     /**
      * 获取所有分区
@@ -21,7 +21,7 @@ public class SetionServiceImpl implements SetionService {
      */
     @Override
     public List findAllSetions() {
-        return setionDao.selectAllSetion();
+        return setionMapper.selectAllSetions();
     }
 
     /**
@@ -31,7 +31,7 @@ public class SetionServiceImpl implements SetionService {
      */
     @Override
     public Setion getSetionById(Integer Id) {
-       return setionDao.selectBySetionId(Id);
+       return setionMapper.selectBySetionId(Id);
     }
 
     /**
@@ -41,7 +41,7 @@ public class SetionServiceImpl implements SetionService {
      */
     @Override
     public int addSetion(Setion setion){
-        if(setionDao.insert(setion) == 1){
+        if(setionMapper.insert(setion) == 1){
             return 1;
         }
         return 0;
@@ -54,7 +54,7 @@ public class SetionServiceImpl implements SetionService {
      */
     @Override
     public int deleteSetion(Integer id){
-        if(setionDao.deleteByPrimaryKey(id) == 1){
+        if(setionMapper.deleteByPrimaryKey(id) == 1){
             return 1;
         }
         return 0;
@@ -67,7 +67,7 @@ public class SetionServiceImpl implements SetionService {
      */
     @Override
     public int updateSetion(Setion setion){
-        if(setionDao.updateByPrimaryKeySelective(setion) == 1){
+        if(setionMapper.updateByPrimaryKeySelective(setion) == 1){
             return 1;
         }
         return 0;
@@ -80,6 +80,6 @@ public class SetionServiceImpl implements SetionService {
      */
     @Override
     public Setion  getSetionByName(String name){
-        return setionDao.selectByName(name);
+        return setionMapper.selectByName(name);
     }
 }

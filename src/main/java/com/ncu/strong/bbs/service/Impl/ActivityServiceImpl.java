@@ -12,35 +12,35 @@ import java.util.List;
 public class ActivityServiceImpl implements ActivityService {
 
     @Autowired
-    private ActivityMapper activityDao;
+    private ActivityMapper activityMapper;
 
     @Override
     public int insert(Activity record) {
-        return activityDao.insert(record);
+        return activityMapper.insert(record);
     }
 
     @Override
     public int deleteByPrimaryKey(Integer id) {
-        return activityDao.deleteByPrimaryKey(id);
+        return activityMapper.deleteByPrimaryKey(id);
     }
 
     @Override
     public int updateByPrimaryKeySelective(Activity record) {
-        return activityDao.updateByPrimaryKeySelective(record);
+        return activityMapper.updateByPrimaryKeySelective(record);
     }
 
     @Override
     public Activity getActivityById(Integer id) {
-        return activityDao.getActivity(id);
+        return activityMapper.getActivity(id);
     }
 
     @Override
     public List getHostActivity() {
-        return activityDao.getHostActivity();
+        return activityMapper.getHostActivity();
     }
 
     @Override
     public List getLatestActivity() {
-        return activityDao.getLatestActivity();
+        return activityMapper.getLatestActivity();
     }
 }

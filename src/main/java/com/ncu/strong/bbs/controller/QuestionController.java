@@ -5,10 +5,7 @@ import com.ncu.strong.bbs.dto.ResponseData;
 import com.ncu.strong.bbs.po.Question;
 import com.ncu.strong.bbs.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -33,7 +30,7 @@ public class QuestionController {
             consumes = "application/json",
             produces = "application/json",
             method = RequestMethod.POST)
-    public ResponseData insertQuestion(Question question) throws IOException {
+    public ResponseData insertQuestion(@RequestBody Question question) throws IOException {
         ResponseData responseData = new ResponseData();
         if(session.getAttribute("accountId") != null || session.getAttribute("admin")!=null) {
             int num = questionService.insert(question);
@@ -142,7 +139,7 @@ public class QuestionController {
             consumes = "application/json",
             produces = "application/json",
             method = RequestMethod.PUT)
-    public ResponseData updateQuestion(Question question) throws IOException {
+    public ResponseData updateQuestion(@RequestBody Question question) throws IOException {
         ResponseData responseData = new ResponseData();
         if(session.getAttribute("accountId") != null || session.getAttribute("admin")!=null) {
             int num = questionService.updateByPrimaryKeySelective(question);

@@ -22,7 +22,9 @@ public class SetionController {
      * 获取所有分区
      * @return
      */
-    @GetMapping(value={"/getAllSetions"})
+    @GetMapping(
+            value={"/getAllSetions"}
+            )
     public List getAllSetions(){
         return setionService.findAllSetions();
     }
