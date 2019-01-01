@@ -1,6 +1,6 @@
 package com.ncu.strong.bbs.controller;
 
-import com.ncu.strong.bbs.pojo.Setion;
+import com.ncu.strong.bbs.po.Setion;
 import com.ncu.strong.bbs.service.SetionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

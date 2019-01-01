@@ -1,6 +1,6 @@
 package com.ncu.strong.bbs.dao;
 
-import com.ncu.strong.bbs.pojo.Post;
+import com.ncu.strong.bbs.po.Post;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package com.ncu.strong.bbs.controller;
 
-import com.ncu.strong.bbs.pojo.ActivityEnter;
+import com.ncu.strong.bbs.po.ActivityEnter;
 import com.ncu.strong.bbs.service.ActivityEnterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

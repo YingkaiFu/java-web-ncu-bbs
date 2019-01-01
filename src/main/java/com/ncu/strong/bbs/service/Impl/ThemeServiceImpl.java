@@ -1,8 +1,7 @@
 package com.ncu.strong.bbs.service.Impl;
 
 import com.ncu.strong.bbs.dao.ThemeMapper;
-import com.ncu.strong.bbs.pojo.Theme;
-import com.ncu.strong.bbs.pojo.User;
+import com.ncu.strong.bbs.po.Theme;
 import com.ncu.strong.bbs.service.ThemeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

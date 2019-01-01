@@ -12,6 +12,4 @@ public class BbsApplicationTests {
     @Test
     public void contextLoads() {
     }
-
 }
-

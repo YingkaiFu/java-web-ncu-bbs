@@ -1,6 +1,6 @@
 package com.ncu.strong.bbs.controller;
 
-import com.ncu.strong.bbs.pojo.Admin;
+import com.ncu.strong.bbs.po.Admin;
 import com.ncu.strong.bbs.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,7 +1,7 @@
 package com.ncu.strong.bbs.service.Impl;
 
 import com.ncu.strong.bbs.dao.QuestionMapper;
-import com.ncu.strong.bbs.pojo.Question;
+import com.ncu.strong.bbs.po.Question;
 import com.ncu.strong.bbs.service.QuestionServie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

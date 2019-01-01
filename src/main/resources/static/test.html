@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-Hans">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.css">
+        <link rel="stylesheet" href="css/common.css">
+        <title>活动广场</title>
+    </head>
+    <body>
+        <!-- 渲染顶部导航栏 -->
+        <script src="js/jquery-3.3.1.js"></script>
+        <script src="js/header.js"></script>
+
+        <!-- 主体内容 -->
+        <div class="container" id="main-body">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-10 col-lg-offset-1">
+                    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                        <!-- 小圆点 -->
+                        <ol class="carousel-indicators">
+                            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="3"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="4"></li>
+                        </ol>
+                        
+                        <!-- 图片列表 -->
+                        <div class="carousel-inner" role="listbox">
+                            <div class="item active">
+                                <a href="#">
+                                    <img src="img/carousel-1.jpg" alt="图片一">
+                                    <div class="carousel-caption">
+                                        图片一
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="item">
+                                <a href="#">
+                                    <img src="img/carousel-2.jpg" alt="图片一">
+                                    <div class="carousel-caption">
+                                        图片一
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <!-- 手动选择上一张、下一张图片 -->
+                        <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 渲染底部版权声明 -->
+        <script src="js/footer.js"></script>
+        <script src="js/jquery-3.3.1.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script>
+            $('.carousel').carousel({
+                interval: 2000
+            })
+        </script>
+    </body>
+</html>

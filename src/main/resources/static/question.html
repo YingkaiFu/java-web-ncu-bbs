@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="zh-Hans">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.css">
+        <link rel="stylesheet" href="css/common.css">
+        <title>springboot集成shiro @RequiresPermissions注解无效</title>
+    </head>
+    <body>
+        <!-- 渲染顶部导航栏 -->
+        <script src="js/jquery-3.3.1.js"></script>
+        <script src="js/header.js"></script>
+
+        <!-- 主题内容 -->
+        <div class="container" id="main-body">
+            <!-- 页面导航 -->
+            <div class="row" id="bbs-nav-head">
+                <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2">
+                    <!-- 导航路径 -->
+                    <ol class="breadcrumb">
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="questions.html">问答广场</a></li>
+                        <li><a href="question.html?questionId=2">springboot集成shiro @RequiresPermissions注解无效</a></li>
+                    </ol>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2">
+                    <h2>springboot集成shiro @RequiresPermissions注解无效</h2>
+                    <!-- 问题信息 -->
+                    <div class="bbs-question-title" style="margin-top: 30px; margin-bottom: 30px;">
+                        <style>
+                            .bbs-quesion-title-item {
+                                margin-right: 10px;
+                            }
+                        </style>
+                        <span class="bbs-quesion-title-item"><a href="user-page.html">安静的程序猿</a></span>
+                        <span>发布于</span>
+                        <span class="bbs-quesion-title-item">今天上午9点12分</span>
+                        阅读
+                        <span class="bbs-quesion-title-item">25</span>
+                        回答
+                        <span class="bbs-quesion-title-item">3</span>
+                    </div>
+                    <!-- 问题内容 -->
+                    <div class="bbs-question-content">
+                        <p>在项目中进行新增后，根据返回主键在更新数据，但是使用mybaits的主键返回。直接报错了</p> 
+                        <p>&nbsp;</p> 
+                        <p>1.第一种实现方式 ，有人说返回的是一个对象，所以设置keyProperty="对象.字段"</p> 
+                        <pre class="hljs perl">
+                            <code class="language-xml">&lt;insert id=<span class="hljs-string">"insert"</span> parameterType=<span class="hljs-string">"cn.com.cathayins.dal.model.DocRecordDO"</span> useGeneratedKeys=<span class="hljs-string">"true"</span> keyProperty=<span class="hljs-string">"record.id"</span>&gt;
+insert into t_doc_record (id, doc_no, product_code, 
+channel_code, schema_code, agreement_print_type, 
+doc_process_cd, doc_inter_method, doc_type_cd, 
+doc_template_code, doc_email_code, doc_path, 
+doc_status_cd, doc_count, gmt_create, is_valid, 
+gmt_modified, tenant_code, doc_xml)
+<span class="hljs-keyword">values</span> (<span class="hljs-comment">#{id,jdbcType=BIGINT}, #{docNo,jdbcType=VARCHAR}, #{productCode,jdbcType=VARCHAR}, </span>
+<span class="hljs-comment">#{channelCode,jdbcType=BIGINT}, #{schemaCode,jdbcType=VARCHAR}, #{agreementPrintType,jdbcType=INTEGER}, </span>
+<span class="hljs-comment">#{docProcessCd,jdbcType=TINYINT}, #{docInterMethod,jdbcType=VARCHAR}, #{docTypeCd,jdbcType=TINYINT}, </span>
+<span class="hljs-comment">#{docTemplateCode,jdbcType=VARCHAR}, #{docEmailCode,jdbcType=VARCHAR}, #{docPath,jdbcType=VARCHAR}, </span>
+<span class="hljs-comment">#{docStatusCd,jdbcType=TINYINT}, #{docCount,jdbcType=INTEGER}, now(), #{isValid,jdbcType=TINYINT}, </span>
+now(), <span class="hljs-comment">#{tenantCode,jdbcType=VARCHAR}, #{docXml,jdbcType=LONGVARCHAR})</span>
+&lt;<span class="hljs-regexp">/insert&gt;</span></code>
+                        </pre> 
+<p>&nbsp;</p> 
+<p>2.第二种实现方式</p> 
+<pre class="hljs perl"><code> &lt;insert id=<span class="hljs-string">"insert"</span> parameterType=<span class="hljs-string">"cn.com.cathayins.dal.model.DocRecordDO"</span> useGeneratedKeys=<span class="hljs-string">"true"</span> keyProperty=<span class="hljs-string">"id"</span>&gt;
+
+insert into t_doc_record (id, doc_no, product_code, 
+channel_code, schema_code, agreement_print_type, 
+doc_process_cd, doc_inter_method, doc_type_cd, 
+doc_template_code, doc_email_code, doc_path, 
+doc_status_cd, doc_count, gmt_create, is_valid, 
+gmt_modified, tenant_code, doc_xml)
+<span class="hljs-keyword">values</span> (<span class="hljs-comment">#{id,jdbcType=BIGINT}, #{docNo,jdbcType=VARCHAR}, #{productCode,jdbcType=VARCHAR}, </span>
+<span class="hljs-comment">#{channelCode,jdbcType=BIGINT}, #{schemaCode,jdbcType=VARCHAR}, #{agreementPrintType,jdbcType=INTEGER}, </span>
+<span class="hljs-comment">#{docProcessCd,jdbcType=TINYINT}, #{docInterMethod,jdbcType=VARCHAR}, #{docTypeCd,jdbcType=TINYINT}, </span>
+<span class="hljs-comment">#{docTemplateCode,jdbcType=VARCHAR}, #{docEmailCode,jdbcType=VARCHAR}, #{docPath,jdbcType=VARCHAR}, </span>
+<span class="hljs-comment">#{docStatusCd,jdbcType=TINYINT}, #{docCount,jdbcType=INTEGER}, now(), #{isValid,jdbcType=TINYINT}, </span>
+now(), <span class="hljs-comment">#{tenantCode,jdbcType=VARCHAR}, #{docXml,jdbcType=LONGVARCHAR})</span>
+&lt;<span class="hljs-regexp">/insert&gt;</span></code></pre> 
+<p>&nbsp;</p> 
+<p>3.第三种&nbsp;</p> 
+<p>&nbsp;</p> 
+<pre class="hljs bash"><code class="language-xml"> &lt;insert id=<span class="hljs-string">"insert"</span> parameterType=<span class="hljs-string">"cn.com.cathayins.dal.model.DocRecordDO"</span>&gt;
+&lt;selectKey resultType=<span class="hljs-string">"java.lang.Long"</span> order=<span class="hljs-string">"AFTER"</span> keyProperty=<span class="hljs-string">"id"</span>&gt;
+SELECT LAST_INSERT_ID()
+&lt;/selectKey&gt; 
+
+insert into t_doc_record (id, doc_no, product_code, 
+channel_code, schema_code, agreement_print_type, 
+doc_process_cd, doc_inter_method, doc_type_cd, 
+doc_template_code, doc_email_code, doc_path, 
+doc_status_cd, doc_count, gmt_create, is_valid, 
+gmt_modified, tenant_code, doc_xml)
+values (<span class="hljs-comment">#{id,jdbcType=BIGINT}, #{docNo,jdbcType=VARCHAR}, #{productCode,jdbcType=VARCHAR}, </span>
+<span class="hljs-comment">#{channelCode,jdbcType=BIGINT}, #{schemaCode,jdbcType=VARCHAR}, #{agreementPrintType,jdbcType=INTEGER}, </span>
+<span class="hljs-comment">#{docProcessCd,jdbcType=TINYINT}, #{docInterMethod,jdbcType=VARCHAR}, #{docTypeCd,jdbcType=TINYINT}, </span>
+<span class="hljs-comment">#{docTemplateCode,jdbcType=VARCHAR}, #{docEmailCode,jdbcType=VARCHAR}, #{docPath,jdbcType=VARCHAR}, </span>
+<span class="hljs-comment">#{docStatusCd,jdbcType=TINYINT}, #{docCount,jdbcType=INTEGER}, now(), #{isValid,jdbcType=TINYINT}, </span>
+now(), <span class="hljs-comment">#{tenantCode,jdbcType=VARCHAR}, #{docXml,jdbcType=LONGVARCHAR})</span>
+&lt;/insert&gt;</code></pre> 
+<p>&nbsp;</p> 
+<p>错误信息</p> 
+<p>&nbsp;Preparing: insert into t_doc_record (id, doc_no, product_code, channel_code, schema_code, agreement_print_type, doc_process_cd, doc_inter_method, doc_type_cd, doc_template_code, doc_email_code, doc_path, doc_status_cd, doc_count, gmt_create, is_valid, gmt_modified, tenant_code, doc_xml) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now(), ?, now(), ?, ?)&nbsp;<br> ==&gt; Parameters: null, 005(String), 000(String), null, null, 1(Integer), null, docPrintSyn(String), 1(Integer), 005(String), null, null, 0(Integer), 1(Integer), 1(Integer), null, java.io.StringReader@1555bde(StringReader)<br> &lt;== &nbsp; &nbsp;Updates: 1<br> Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@13673e2]<br> 11:39:20.156 [http-nio-8080-exec-1] ERROR [,] [,,,,,,] [] cn.com.cathayins.component.DocPrintComponent - &nbsp;==== INSERT t_doc_record &nbsp;error ==for org.mybatis.spring.MyBatisSystemException: nested exception is org.apache.ibatis.executor.ExecutorException: Error getting generated key or setting result to parameter object. Cause: java.lang.NullPointerException<br> &nbsp;</p> 
+<p>综上， 1,2直接报错。。3没错，但是对象里面的id值仍为null，没有赋值成功</p> 
+<p>&nbsp;</p> 
+<p>求大神解惑，到底哪方面有问题</p> 
+<p>&nbsp;</p> 
+<p>&nbsp;</p>
+                    </div>
+
+                    <!-- 回答列表 -->
+                    <div id="bbs-question-answer-list">
+                        <div class="list-group">
+                            <div href="#" class="list-group-item">
+                                <div class="row">
+                                    <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="text-align: center;">
+                                        <div>
+                                            <span class="glyphicon glyphicon-triangle-top" style="cursor:pointer;" title="赞同"></span>
+                                        </div>
+                                        <div>
+                                            <span>0</span>
+                                        </div>
+                                        <div>
+                                            <span class="glyphicon glyphicon-triangle-bottom" style="cursor:pointer;" title="反对"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                        <img src="https://avatars1.githubusercontent.com/u/24518663" class="img-circle" style="width: 100px; height: 100px;">
+                                    </div>
+                                    
+                                    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                                        <div class="list-group-item-heading">
+                                            <h4>在夏老树<small>·2小时前发布</small></h4>
+                                        </div>
+                                        <div class="bbs-question-answer-content">
+                                            <p>圣诞节是耶稣的诞辰，同时也是耶稣他妈玛利亚的受难日，在这一天不能说圣诞快乐，要说圣诞安康，这一天也被西方的安道尔、巴巴多斯岛等地区称为西方的寒食节，在这一天要吃饺子，取圣母玛利亚“教子”之意，时刻提醒我们教育后代的重要性。&#8203;</p>
+                                            <img src="https://oscimg.oschina.net/oscnet/up-mb48a3fu4oi9mhs6r55gx1hzw5lm11rk!/sq/200">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div href="#" class="list-group-item">
+                                <div class="row">
+                                    <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="text-align: center;">
+                                        <div>
+                                            <span class="glyphicon glyphicon-triangle-top" style="cursor:pointer;" title="赞同"></span>
+                                        </div>
+                                        <div>
+                                            <span>0</span>
+                                        </div>
+                                        <div>
+                                            <span class="glyphicon glyphicon-triangle-bottom" style="cursor:pointer;" title="反对"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                        <img src="https://avatars1.githubusercontent.com/u/24518663" class="img-circle" style="width: 100px; height: 100px;">
+                                    </div>
+                                    
+                                    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                                        <div class="list-group-item-heading">
+                                            <h4>在夏老树<small>·2小时前发布</small></h4>
+                                        </div>
+                                        <div class="bbs-question-answer-content">
+                                            <p>圣诞节是耶稣的诞辰，同时也是耶稣他妈玛利亚的受难日，在这一天不能说圣诞快乐，要说圣诞安康，这一天也被西方的安道尔、巴巴多斯岛等地区称为西方的寒食节，在这一天要吃饺子，取圣母玛利亚“教子”之意，时刻提醒我们教育后代的重要性。&#8203;</p>
+                                            <img src="https://oscimg.oschina.net/oscnet/up-mb48a3fu4oi9mhs6r55gx1hzw5lm11rk!/sq/200">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div href="#" class="list-group-item">
+                                <div class="row">
+                                    <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="text-align: center;">
+                                        <div>
+                                            <span class="glyphicon glyphicon-triangle-top" style="cursor:pointer;" title="赞同"></span>
+                                        </div>
+                                        <div>
+                                            <span>0</span>
+                                        </div>
+                                        <div>
+                                            <span class="glyphicon glyphicon-triangle-bottom" style="cursor:pointer;" title="反对"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                        <img src="https://avatars1.githubusercontent.com/u/24518663" class="img-circle" style="width: 100px; height: 100px;">
+                                    </div>
+                                    
+                                    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                                        <div class="list-group-item-heading">
+                                            <h4>在夏老树<small>·2小时前发布</small></h4>
+                                        </div>
+                                        <div class="bbs-question-answer-content">
+                                            <p>圣诞节是耶稣的诞辰，同时也是耶稣他妈玛利亚的受难日，在这一天不能说圣诞快乐，要说圣诞安康，这一天也被西方的安道尔、巴巴多斯岛等地区称为西方的寒食节，在这一天要吃饺子，取圣母玛利亚“教子”之意，时刻提醒我们教育后代的重要性。&#8203;</p>
+                                            <img src="https://oscimg.oschina.net/oscnet/up-mb48a3fu4oi9mhs6r55gx1hzw5lm11rk!/sq/200">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div href="#" class="list-group-item">
+                                <div class="row">
+                                    <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="text-align: center;">
+                                        <div>
+                                            <span class="glyphicon glyphicon-triangle-top" style="cursor:pointer;" title="赞同"></span>
+                                        </div>
+                                        <div>
+                                            <span>0</span>
+                                        </div>
+                                        <div>
+                                            <span class="glyphicon glyphicon-triangle-bottom" style="cursor:pointer;" title="反对"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                        <img src="https://avatars1.githubusercontent.com/u/24518663" class="img-circle" style="width: 100px; height: 100px;">
+                                    </div>
+                                    
+                                    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                                        <div class="list-group-item-heading">
+                                            <h4>在夏老树<small>·2小时前发布</small></h4>
+                                        </div>
+                                        <div class="bbs-question-answer-content">
+                                            <p>圣诞节是耶稣的诞辰，同时也是耶稣他妈玛利亚的受难日，在这一天不能说圣诞快乐，要说圣诞安康，这一天也被西方的安道尔、巴巴多斯岛等地区称为西方的寒食节，在这一天要吃饺子，取圣母玛利亚“教子”之意，时刻提醒我们教育后代的重要性。&#8203;</p>
+                                            <img src="https://oscimg.oschina.net/oscnet/up-mb48a3fu4oi9mhs6r55gx1hzw5lm11rk!/sq/200">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 分页部分 -->
+                    <div class="pagination-wrapper" style="display: flex; justify-content: center;">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                              <li><a href="javascript:void(0);" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+                              <li class="active"><a href="javascript:void(0);">1</a></li>
+                              <li><a href="javascript:void(0);">2</a></li>
+                              <li><a href="javascript:void(0);">3</a></li>
+                              <li><a href="javascript:void(0);">4</a></li>
+                              <li><a href="javascript:void(0);">5</a></li>
+                              <li><a href="javascript:void(0);" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                    <!-- 编辑回答 -->
+                    <div class="bbs-question-answer-editor-wrapper">
+                        <!-- 富文本编辑器 -->
+                        <div id="bbs-question-answer-editor"></div>
+                        <div class="row">
+                            <div class="col-lg-2 col-lg-offset-10">
+                                <button type="button" class="btn btn-large btn-block btn-success">我要回答</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+        <!-- 渲染底部版权声明 -->
+        <script src="js/footer.js"></script>
+        <script src="js/jquery-3.3.1.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/wangEditor.js"></script>
+        <script>
+            // 声明创建富文本编辑器
+            var E = window.wangEditor;
+            var editor = new E("#bbs-question-answer-editor");
+            editor.create();
+        </script>
+    </body>
+</html>

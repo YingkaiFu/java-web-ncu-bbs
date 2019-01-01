@@ -1,7 +1,9 @@
 package com.ncu.strong.bbs.dao;
 
-import com.ncu.strong.bbs.pojo.Account;
+import com.ncu.strong.bbs.po.Account;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface AccountMapper {
 
     Account selectByLoginName(String loginName);
@@ -14,12 +16,9 @@ public interface AccountMapper {
     int deleteByPrimaryKey(Integer id);
 
     /**
-     * 注册
-     * This method corresponds to the database table user_account
-     *
-     * @mbggenerated
+     * 注册账户
      */
-    int insert(Account record);
+    int insertAccount(Account account);
 
     /**
      *

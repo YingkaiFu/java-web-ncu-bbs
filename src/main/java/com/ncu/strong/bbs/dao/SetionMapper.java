@@ -1,8 +1,7 @@
 package com.ncu.strong.bbs.dao;
 
-import com.ncu.strong.bbs.pojo.Setion;
+import com.ncu.strong.bbs.po.Setion;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 public interface SetionMapper {

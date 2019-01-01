@@ -1,6 +1,6 @@
 package com.ncu.strong.bbs.dao;
 
-import com.ncu.strong.bbs.pojo.Question;
+import com.ncu.strong.bbs.po.Question;
 
 import java.util.List;
 

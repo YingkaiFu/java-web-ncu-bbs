@@ -1,6 +1,6 @@
 package com.ncu.strong.bbs.dao;
 
-import com.ncu.strong.bbs.pojo.User;
+import com.ncu.strong.bbs.po.User;
 
 import java.util.List;
 
@@ -54,7 +54,7 @@ public interface UserMapper {
      */
     int updateByPrimaryKey(User record);
 
-     List findAllUser();
+     List<User> findAllUser();
 
     /**
      * 得到某一用户的所有动弹
