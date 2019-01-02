@@ -90,4 +90,6 @@ public interface PostMapper {
      * 更新贴子所有信息
      */
     int updateByPrimaryKey(Post record);
+
+    void updateClick(Integer id);
 }

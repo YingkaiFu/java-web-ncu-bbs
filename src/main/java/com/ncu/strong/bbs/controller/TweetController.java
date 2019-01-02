@@ -68,7 +68,7 @@ public class TweetController {
             method=RequestMethod.DELETE)
     public ResponseData deleteTweet(@PathVariable("id")Integer id) throws IOException {
         ResponseData responseData = new ResponseData();
-        if(session.getAttribute("accountId") != null || session.getAttribute("admin")!=null) {
+        if(session.getAttribute("account") != null || session.getAttribute("admin")!=null) {
             int num = tweetService.deleteByPrimaryKey(id);
             if (num == 0) {
                 responseData.setCode(0);
@@ -97,7 +97,7 @@ public class TweetController {
             method = RequestMethod.POST)
     public ResponseData insertTweet(@RequestBody Tweet tweet) throws IOException {
         ResponseData responseData = new ResponseData();
-        if(session.getAttribute("accountId") != null || session.getAttribute("admin")!=null) {
+        if(session.getAttribute("account") != null || session.getAttribute("admin")!=null) {
             int num = tweetService.insertSelective(tweet);
             if (num == 0) {
                 responseData.setCode(0);
@@ -125,7 +125,7 @@ public class TweetController {
             method = RequestMethod.PUT)
     public ResponseData updateTweet(@RequestBody Tweet record) throws IOException {
         ResponseData responseData = new ResponseData();
-        if(session.getAttribute("accountId") != null || session.getAttribute("admin")!=null) {
+        if(session.getAttribute("account") != null || session.getAttribute("admin")!=null) {
             int num = tweetService.updateByPrimaryKeySelective(record);
             if (num == 0) {
                 responseData.setCode(0);

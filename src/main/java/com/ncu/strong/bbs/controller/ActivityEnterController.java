@@ -34,7 +34,7 @@ public class ActivityEnterController {
             method = RequestMethod.POST)
     public ResponseData insertEnter(@RequestBody ActivityEnter activityEnter, HttpSession session) {
         ResponseData responseData = new ResponseData();
-        if(session.getAttribute("accountId") != null ||
+        if(session.getAttribute("account") != null ||
                 session.getAttribute("admin") != null) {
             int num = activityEnterService.insert(activityEnter);
             if (num == 0) {

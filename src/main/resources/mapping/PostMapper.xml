@@ -5,13 +5,15 @@
         <id column="id" jdbcType="INTEGER" property="id" />
         <result column="reply_id" jdbcType="INTEGER" property="replyId" />
         <result column="author_id" jdbcType="INTEGER" property="authorId" />
-        <result column="setion_id" jdbcType="INTEGER" property="setionId" />
+        <result column="setionName" jdbcType="INTEGER" property="setionName" />
+        <result column="setion_id" property="setionId"/>
         <result column="content" jdbcType="VARCHAR" property="content" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
         <result column="mark" jdbcType="BIT" property="mark" />
         <result column="click_num" jdbcType="INTEGER" property="clickNum" />
         <result column="top" jdbcType="BIT" property="top" />
-        <result column="post_theme_id" jdbcType="INTEGER" property="postThemeId" />
+        <result column="post_theme_id" property="postThemeId"/>
+        <result column="themeName" jdbcType="INTEGER" property="themeName" />
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
         <result column="reply_num" jdbcType="INTEGER" property="replyNum"/>
         <result column="nickname" jdbcType="VARCHAR" property="nickName"/>
@@ -44,7 +46,8 @@
 
     <!--查询最热贴子-->
     <select id="selectHostPosts" resultMap="ResultMapWithBLOBs">
-        select b.id, reply_id, author_id, setion_id, content, create_time, mark, top, post_theme_id, update_time, click_num,
+        select b.id, reply_id, author_id, setion_id,(select name from setion where setion.id = b.setion_id) as setionName,post_theme_id,
+        (select title from theme where theme.id = b.post_theme_id) as themeName,content, create_time, mark, top, post_theme_id, update_time, click_num,
     (select count(*) from post as a where a.reply_id = b.id) AS reply_num,(select nickname from user_profile where user_account_id = author_id) as nickname,
     (select avatar from user_profile where user_account_id = author_id) as avatar
     from post as b
@@ -53,8 +56,8 @@
 
     <!--查询最新贴子-->
     <select id ="selectNewestPosts" resultMap="ResultMapWithBLOBs">
-        select b.id, reply_id, author_id, setion_id, content, create_time, mark, top, post_theme_id, update_time, click_num,
-        (select count(*) from post as a where a.reply_id = b.id) AS reply_num,(select nickname from user_profile where user_account_id = author_id) as nickname,
+        select b.id, reply_id, author_id, setion_id,(select name from setion where setion.id = b.setion_id) as setionName,content, create_time, mark, top, (select title from theme where theme.id = b.post_theme_id) as themeName, update_time, click_num,
+        post_theme_id,(select count(*) from post as a where a.reply_id = b.id) AS reply_num,(select nickname from user_profile where user_account_id = author_id) as nickname,
         (select avatar from user_profile where user_account_id = author_id) as avatar
         from post as b
         where b.reply_id is null order by update_time desc limit 20;
@@ -150,6 +153,11 @@
             #{clickNum,jdbcType=INTEGER}, #{top,jdbcType=BIT}, #{postThemeId,jdbcType=INTEGER},
             #{updateTime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR})
     </insert>
+    <update id="updateClick" >
+        update post
+        set click_num += 1
+        where post.id = #{id}
+    </update>
 
     <insert id="insertSelective" parameterType="com.ncu.strong.bbs.po.Post">
         insert into post

@@ -166,12 +166,13 @@
       <id column="q_id" jdbcType="INTEGER" property="id" />
       <result column="title" jdbcType="VARCHAR" property="title" />
       <result column="q_time" jdbcType="TIMESTAMP" property="createTime" />
+      <result column="q_author_id" jdbcType="INTEGER" property="authorId" />
       <result column="description" jdbcType="LONGVARCHAR" property="description" />
       <result column="click_num" jdbcType="INTEGER" property="clickNum" />
       <!--<result column="answer_num" property="answerNum"/>-->
       <!--<result property="answerCount"/>-->
       <association javaType="com.ncu.strong.bbs.po.User" property="author">
-          <id column="q_author_id" jdbcType="INTEGER" property="id" />
+          <id column="q_user_id" jdbcType="INTEGER" property="id" />
           <result column="q_nickname" jdbcType="VARCHAR" property="nickname" />
           <result column="q_avatar" jdbcType="VARCHAR" property="avatar" />
       </association>
@@ -181,7 +182,7 @@
           <result column="content" jdbcType="LONGVARCHAR" property="content" />
           <result column="author_id" property="authorId" />
           <association property="answerUser" javaType="com.ncu.strong.bbs.po.User">
-              <id column="a_author_id" jdbcType="INTEGER" property="id" />
+              <id column="a_user_id" jdbcType="INTEGER" property="id" />
               <result column="a_nickname" jdbcType="VARCHAR" property="nickname" />
               <result column="a_avatar" jdbcType="VARCHAR" property="avatar" />
           </association>
@@ -191,12 +192,13 @@
         <id column="q_id" jdbcType="INTEGER" property="id" />
         <result column="title" jdbcType="VARCHAR" property="title" />
         <result column="q_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="q_author_id" jdbcType="INTEGER" property="authorId" />
         <result column="description" jdbcType="LONGVARCHAR" property="description" />
         <result column="click_num" jdbcType="INTEGER" property="clickNum" />
         <result column="answer_num" property="answerNum"/>
         <!--<result property="answerCount"/>-->
         <association javaType="com.ncu.strong.bbs.po.User" property="author">
-            <id column="author_id" jdbcType="INTEGER" property="id" />
+            <id column="user_id" jdbcType="INTEGER" property="id" />
             <result column="nickname" jdbcType="VARCHAR" property="nickname" />
             <result column="avatar" jdbcType="VARCHAR" property="avatar" />
         </association>
@@ -210,8 +212,8 @@
 <!--获取最热问题、显示作者和答案数-->
     <select id="getHostQuestion" resultMap="AllResultMap">
         select question.id as q_id,question.create_time as q_time,question.description,
-        question.title,question.click_num,count(answer.id) as answer_num,
-        user_profile.id as author_id,user_profile.nickname,user_profile.avatar
+        question.author_id as q_author_id,question.title,question.click_num,count(answer.id) as answer_num,
+        user_profile.id as user_id,user_profile.nickname,user_profile.avatar
         from question,user_profile,answer,user_account
         where question.author_id = user_account.id and question.id = answer.question_id
         and user_account.id = user_profile.user_account_id
@@ -221,8 +223,8 @@
     <!--获取最新问题、显示作者和答案数-->
     <select id="getLatestQuestion" resultMap="AllResultMap">
         select question.id as q_id,question.create_time as q_time,question.description,
-        question.title,question.click_num,count(answer.id) as answer_num,
-        user_profile.id as author_id,user_profile.nickname,user_profile.avatar
+        question.author_id as q_author_id,question.title,question.click_num,count(answer.id) as answer_num,
+        user_profile.id as user_id,user_profile.nickname,user_profile.avatar
         from question,user_profile,answer,user_account
         where question.author_id = user_account.id and question.id = answer.question_id
         and user_account.id = user_profile.user_account_id
@@ -231,10 +233,10 @@
     </select>
     <!--获取指定id的问题、作者和答案-->
     <select id="getQuestionById" resultMap="SingleResultMap">
-        select user1.id as q_author_id,user1.nickname as q_nickname,user1.avatar as q_avater,
+        select user1.id as q_user_id,user1.nickname as q_nickname,user1.avatar as q_avatar,
         question.id as q_id,question.title,question.create_time as q_time,question.description,
-        question.click_num,answer.*,
-        user2.id as a_author_id,user2.nickname as a_nickname,user2.avatar as a_avater
+        question.click_num,question.author_id as q_author_id,answer.*,
+        user2.id as a_user_id,user2.nickname as a_nickname,user2.avatar as a_avatar
         from question,answer,user_profile user1,user_profile user2,user_account account1,user_account account2
         where question.id=#{id} and
         question.author_id = account1.id and

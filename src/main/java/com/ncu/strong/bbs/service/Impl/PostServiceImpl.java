@@ -20,6 +20,7 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     public Post findPostById(Integer id){
+        postMapper.updateClick(id);
         return postMapper.selectByPrimaryKey(id);
     }
 
