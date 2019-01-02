@@ -32,7 +32,7 @@ public class QuestionController {
             method = RequestMethod.POST)
     public ResponseData insertQuestion(@RequestBody Question question) throws IOException {
         ResponseData responseData = new ResponseData();
-        if(session.getAttribute("accountId") != null || session.getAttribute("admin")!=null) {
+        if(session.getAttribute("account") != null || session.getAttribute("admin")!=null) {
             int num = questionService.insert(question);
             if (num == 0) {
                 responseData.setCode(0);
@@ -61,7 +61,7 @@ public class QuestionController {
             method = RequestMethod.DELETE)
     public ResponseData deleteQuestion(@PathVariable("id")Integer id) throws IOException {
         ResponseData responseData = new ResponseData();
-        if(session.getAttribute("accountId") != null || session.getAttribute("admin")!=null) {
+        if(session.getAttribute("account") != null || session.getAttribute("admin")!=null) {
             int num = questionService.delete(id);
             if (num == 0) {
                 responseData.setCode(0);
@@ -141,7 +141,7 @@ public class QuestionController {
             method = RequestMethod.PUT)
     public ResponseData updateQuestion(@RequestBody Question question) throws IOException {
         ResponseData responseData = new ResponseData();
-        if(session.getAttribute("accountId") != null || session.getAttribute("admin")!=null) {
+        if(session.getAttribute("account") != null || session.getAttribute("admin")!=null) {
             int num = questionService.updateByPrimaryKeySelective(question);
             if (num == 0) {
                 responseData.setCode(0);

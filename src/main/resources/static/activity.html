@@ -41,7 +41,7 @@
                             <img src="https://static.oschina.net/uploads/cover/4054879_iyMdf_bi.jpg" alt="蚂蚁金服ATEC科技大会·上海">
                         </div>
                         <div class="col-lg-5" id="bbs-activity-intro">
-                            <p style="font-size: 28px; font-weight: bold;"><strong>蚂蚁金服ATEC科技大会·上海</strong></p>
+                            <p style="font-size: 28px; font-weight: bold;"><strong id="content">蚂蚁金服ATEC科技大会·上海</strong></p>
                             <div>
                                 <span class="bbs-activity-intro-key">活动状态：</span>
                                 <span>报名中</span>
@@ -52,14 +52,14 @@
                             </div>
                             <div>
                                 <span class="bbs-activity-intro-key">活动地点：</span>
-                                <span>上海 浦东 上海浦东嘉里大酒店（上海浦东花木路1388号）</span>
+                                <span id="location">上海 浦东 上海浦东嘉里大酒店（上海浦东花木路1388号）</span>
                             </div>
                             <div>
-                                <span class="bbs-activity-intro-key">活动人数：</span>
-                                <span>100</span>
+                                <span class="bbs-activity-intro-key">报名人数：</span>
+                                <span id="applicantNum">100</span>
                             </div>
                             <div id="bbs-activity-regist-wrapper">
-                                <button type="button" class="btn btn-large btn-success">立即报名</button>
+                                <button type="button" class="btn btn-large btn-success" id="join">立即报名</button>
                             </div>
                         </div>
                         <div class="col-lg-12 bbs-activity-intro-content">
@@ -76,5 +76,48 @@
         <script src="js/footer.js"></script>
         <script src="js/jquery-3.3.1.js"></script>
         <script src="js/bootstrap.js"></script>
+        <script src="js/common.js"></script>
+        <script>
+            $(function () {
+                var activityId = getQueryString("activityId");
+                $.ajax({
+                    type: "get",
+                    url: "/activity/" + activityId,
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function (response) {
+                        console.log(response);
+                        if (response.code == 1) {
+                            var activity = response.data.activity;
+                            $("#content").html(activity.description);
+                            $("#location").html(activity.locale);
+                            $("#applicantNum").html(activity.applicantNum);
+                        } else {
+                            alert(response.msg);
+                        }
+                    }
+                })
+                $("#join").on("click", function(){
+                    $.ajax({
+                        type: "get",
+                        url: "/enter/" + activityId,
+                        contentType: "application/json",
+                        dataType: "json",
+                        data:JSON.stringify({
+                            "applicantId":applicantId,
+                            "activityId":activityId
+                        }),
+                        success: function (response) {
+                            console.log(response);
+                            if (response.code == 1) {
+                                alert(response.msg);
+                            } else {
+                                alert(response.msg);
+                            }
+                        }
+                    })
+                })
+            });
+        </script>
     </body>
 </html>

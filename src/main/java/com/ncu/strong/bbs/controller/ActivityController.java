@@ -29,7 +29,7 @@ public class ActivityController {
             method = RequestMethod.POST)
     public ResponseData insertActivity(@RequestBody Activity activity, HttpSession session) {
         ResponseData responseData = new ResponseData();
-        if(session.getAttribute("accountId") != null ||
+        if(session.getAttribute("account") != null ||
                 session.getAttribute("admin") != null) {
             int num = activityService.insert(activity);
             if (num == 0) {
@@ -55,7 +55,7 @@ public class ActivityController {
             method = RequestMethod.DELETE)
     public ResponseData deleteActivity(@PathVariable("id")Integer id, HttpSession session) {
         ResponseData responseData = new ResponseData();
-        if(session.getAttribute("accountId") != null ||
+        if(session.getAttribute("account") != null ||
                 session.getAttribute("admin") != null) {
             int num = activityService.deleteByPrimaryKey(id);
             if (num == 0) {
@@ -82,7 +82,7 @@ public class ActivityController {
             method = RequestMethod.PUT)
     public ResponseData deleteActivity(@RequestBody Activity activity, HttpSession session) throws IOException {
         ResponseData responseData = new ResponseData();
-        if(session.getAttribute("accountId") != null ||
+        if(session.getAttribute("account") != null ||
                 session.getAttribute("admin") != null) {
             int num = activityService.updateByPrimaryKeySelective(activity);
             if (num == 0) {

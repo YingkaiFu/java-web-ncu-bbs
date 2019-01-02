@@ -48,17 +48,33 @@ public class PostController {
     /**
      * 获取最热帖
      */
-    @RequestMapping(value={"/getHostPosts"},produces = {"application/json;charset=UTF-8"},method = RequestMethod.GET)
-    public List<Post> getHotPosts(){
-       return postService.findHostPosts();
+    @RequestMapping(value={"/getHostPosts"},
+            consumes = "application/json",
+            produces = "application/json",
+            method = RequestMethod.GET)
+    public ResponseData getHotPosts(){
+        ResponseData responseData = new ResponseData();
+        List list = postService.findHostPosts();
+        responseData.setCode(1);
+        responseData.setMsg("获取成功");
+        responseData.getData().put("posts",list);
+        return responseData;
     }
 
     /**
      * 获取最新贴
      */
-    @RequestMapping(value={"/getNewestPosts"},produces = {"application/json;charset=UTF-8"},method = RequestMethod.GET)
-    public List<Post> getNewPosts(){
-        return postService.findNewestPosts();
+    @RequestMapping(value={"/getNewestPosts"},
+            consumes = "application/json",
+            produces = "application/json",
+            method = RequestMethod.GET)
+    public ResponseData getNewPosts(){
+        ResponseData responseData = new ResponseData();
+        List list = postService.findNewestPosts();
+        responseData.setCode(1);
+        responseData.setMsg("获取成功");
+        responseData.getData().put("posts",list);
+        return responseData;
     }
 
     /**

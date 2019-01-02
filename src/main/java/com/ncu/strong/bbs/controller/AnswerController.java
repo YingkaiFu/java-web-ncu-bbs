@@ -31,7 +31,7 @@ public class AnswerController {
             method = RequestMethod.POST)
     public ResponseData insertAnswer(@RequestBody Answer answer, HttpSession session) {
         ResponseData responseData = new ResponseData();
-        if(session.getAttribute("accountId") != null || session.getAttribute("admin")!=null) {
+        if(session.getAttribute("account") != null || session.getAttribute("admin")!=null) {
             int num = answerService.insert(answer);
             if (num == 0) {
                 responseData.setCode(0);
@@ -58,7 +58,7 @@ public class AnswerController {
             method = RequestMethod.DELETE)
     public ResponseData deleteAnswer(@PathVariable("id")Integer id, HttpSession session) {
         ResponseData responseData = new ResponseData();
-        if(session.getAttribute("accountId") != null || session.getAttribute("admin")!=null) {
+        if(session.getAttribute("account") != null || session.getAttribute("admin")!=null) {
             int num = answerService.deleteByPrimaryKey(id);
             if (num == 0) {
                 responseData.setCode(0);
@@ -83,7 +83,7 @@ public class AnswerController {
             method = RequestMethod.PUT)
     public ResponseData updateAnswer(@RequestBody Answer answer, HttpSession session) {
         ResponseData responseData = new ResponseData();
-        if(session.getAttribute("accountId") != null || session.getAttribute("admin")!=null) {
+        if(session.getAttribute("account") != null || session.getAttribute("admin")!=null) {
             int num = answerService.updateByPrimaryKeySelective(answer);
             if (num == 0) {
                 responseData.setCode(0);

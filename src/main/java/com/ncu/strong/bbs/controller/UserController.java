@@ -252,7 +252,7 @@ public class UserController {
     public ResponseData getTweetsByUser(
             @PathVariable("id")Integer id, HttpSession session) {
         ResponseData responseData = new ResponseData();
-        if(session.getAttribute("accountId") != null ||
+        if(session.getAttribute("account") != null ||
                 session.getAttribute("admin") != null) {
             User tweets = userService.getTweetsByUser(id);
             responseData.setCode(1);
@@ -276,7 +276,7 @@ public class UserController {
     public ResponseData getQuestionsByUser(
             @PathVariable("id")Integer id, HttpSession session) {
         ResponseData responseData = new ResponseData();
-        if(session.getAttribute("accountId") != null ||
+        if(session.getAttribute("account") != null ||
                 session.getAttribute("admin") != null) {
             User questions =  userService.getQuestionsByUser(id);
             responseData.setCode(1);
@@ -301,7 +301,7 @@ public class UserController {
     public ResponseData getAnswerByUser(
             @PathVariable("id") Integer id, HttpSession session) {
         ResponseData responseData = new ResponseData();
-        if(session.getAttribute("accountId") != null ||
+        if(session.getAttribute("account") != null ||
                 session.getAttribute("admin") != null) {
             User answers = userService.getAnswersByUser(id);
             responseData.setCode(1);
@@ -327,7 +327,7 @@ public class UserController {
             method = RequestMethod.GET)
     public Object getCreateActivity(@PathVariable("id") Integer id, HttpSession session) {
         ResponseData responseData = new ResponseData();
-        if(session.getAttribute("accountId") != null ||
+        if(session.getAttribute("account") != null ||
                 session.getAttribute("admin") != null) {
             User create = userService.getCreateActivity(id);
             responseData.setCode(1);
@@ -351,7 +351,7 @@ public class UserController {
             method = RequestMethod.GET)
     public ResponseData getEnterActivity(@PathVariable("id") Integer id, HttpSession session) {
         ResponseData responseData = new ResponseData();
-        if(session.getAttribute("accountId") != null ||
+        if(session.getAttribute("account") != null ||
                 session.getAttribute("admin") != null) {
             User enter = userService.getEnterActivity(id);
             responseData.setCode(1);

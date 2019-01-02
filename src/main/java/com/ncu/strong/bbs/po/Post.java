@@ -109,6 +109,10 @@ public class Post {
 
     private String avatar;
 
+    private String setionName;
+
+    private String ThemeName;
+
     public Integer getReplyNum() {
         return replyNum;
     }
@@ -395,5 +399,21 @@ public class Post {
      */
     public void setContent(String content) {
         this.content = content == null ? null : content.trim();
+    }
+
+    public String getSetionName() {
+        return setionName;
+    }
+
+    public void setSetionName(String setionName) {
+        this.setionName = setionName;
+    }
+
+    public String getThemeName() {
+        return ThemeName;
+    }
+
+    public void setThemeName(String themeName) {
+        ThemeName = themeName;
     }
 }
