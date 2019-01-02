@@ -44,10 +44,7 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     public int addPost(Post post) {
-        if(postMapper.insertSelective(post) == 1){
-            return 1;
-        }
-        return 0;
+        return postMapper.insertSelective(post);
     }
 
     /**
