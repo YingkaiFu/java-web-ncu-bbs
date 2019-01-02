@@ -31,18 +31,14 @@ public class SetionController {
 
     /**
      * 通过id获取分区
-     * @param id
-     * @return
      */
-    @PostMapping(value={"/getSetionById"})
-    public Setion getSetionById(@RequestBody Integer id){
-        return setionService.getSetionById(id);
+    @GetMapping(value={"/getSetionById"})
+    public Setion getSetionById(@RequestParam(name = "setionId", required = true) Integer setionId){
+        return setionService.getSetionById(setionId);
     }
 
     /**
      * 新增分区
-     * @param setion
-     * @return
      */
     @PostMapping(value={"/addSetion"})
     public String addSetion(@RequestBody Setion setion){

@@ -10,112 +10,83 @@ import java.util.List;
 
 @Service
 public class ThemeServiceImpl implements ThemeService {
+    private final ThemeMapper themeMapper;
 
     @Autowired
-    private ThemeMapper themeDao;
+    public ThemeServiceImpl(ThemeMapper themeMapper) {
+        this.themeMapper = themeMapper;
+    }
 
     /**
      * 获取所有主题
-     * @return
      */
     @Override
-    public List findAllThemes() {
-        return themeDao.selectAllThemes();
+    public List<Theme> findAllThemes() {
+        return themeMapper.selectAllThemes();
     }
 
     /**
      * 获取当前用户的所有主题
-     * @param userId
-     * @return
      */
     @Override
-    public List getUsersThemes(Integer userId) {
-        return themeDao.selectUsersThemes(userId);
+    public List<Theme> getUsersThemes(Integer userId) {
+        return themeMapper.selectUsersThemes(userId);
     }
 
     /**
      * 通过id获取主题
-     * @param id
-     * @return
      */
     @Override
     public Theme getThemeById(Integer id) {
-       return themeDao.selectByPrimaryKey(id);
+       return themeMapper.selectByPrimaryKey(id);
     }
 
 
     /**
      * 获取当前分区下的所有主题
-     * @param setionId
-     * @return
      */
     @Override
-    public List getThemesBySetionId(Integer setionId) {
-        return themeDao.selectBySetionId(setionId);
+    public List<Theme> getThemesBySetionId(Integer setionId) {
+        return themeMapper.selectBySetionId(setionId);
     }
 
     /**
      * 通过id删除主题
-     * @param id
-     * @return
      */
     @Override
     public int deleteById(Integer id) {
-        if(themeDao.deleteByPrimaryKey(id) == 1){
-            return 1;
-        }
-        return 0;
+        return themeMapper.deleteByPrimaryKey(id);
     }
 
     /**
      * 删除当前用户的所有主题
-     * @param id
-     * @return
      */
     @Override
     public int deleteUsersPosts(Integer id) {
-        if(themeDao.deleteByUserAccountId(id) == 1){
-            return 1;
-        }
-        return 0;
+        return themeMapper.deleteByUserAccountId(id);
     }
 
     /**
      * 删除当前分区下的所有主题
-     * @param setionId
-     * @return
      */
     @Override
     public int deleteBySetionId(Integer setionId) {
-        if(themeDao.deleteBySetionId(setionId) == 1){
-            return 1;
-        }
-        return 0;
+        return themeMapper.deleteBySetionId(setionId);
     }
 
     /**
-     * 添加主题
-     * @param theme
-     * @return
+     * 添加帖子主题
      */
     @Override
-    public int insert(Theme theme) {
-        if(themeDao.insertSelective(theme) == 1){
-            return 1;
-        }
-        return 0;
+    public int insertTheme(Theme theme) {
+        return themeMapper.insertTheme(theme);
     }
 
     /**
      * 更新主题
-     * @param theme
-     * @return
      */
     @Override
     public int update(Theme theme) {
-       if(themeDao.updateByPrimaryKeySelective(theme) == 1){
-           return 1;
-       }
-       return 0;
+       return themeMapper.updateByPrimaryKeySelective(theme);
     }
 }

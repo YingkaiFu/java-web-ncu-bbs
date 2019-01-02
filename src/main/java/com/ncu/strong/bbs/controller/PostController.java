@@ -2,25 +2,47 @@ package com.ncu.strong.bbs.controller;
 
 import com.ncu.strong.bbs.dto.ResponseData;
 import com.ncu.strong.bbs.po.Post;
+import com.ncu.strong.bbs.po.Theme;
 import com.ncu.strong.bbs.po.User;
 import com.ncu.strong.bbs.service.PostService;
+import com.ncu.strong.bbs.service.ThemeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value={"/post"})
 public class PostController {
+    private final ThemeService themeService;
+
     private final PostService postService;
 
     private final HttpSession session;
 
     @Autowired
-    public PostController(PostService postService, HttpSession session) {
+    public PostController(PostService postService, HttpSession session, ThemeService themeService) {
         this.postService = postService;
         this.session = session;
+        this.themeService = themeService;
+    }
+
+    /**
+     * 获取当前分区的所有帖子
+     */
+    @GetMapping(value = "listSetionPosts")
+    public ResponseData getPostsBySetionId(
+            @RequestParam(name = "setionId", required = true, defaultValue = "1") Integer setionId) {
+        ResponseData responseData = new ResponseData();
+
+        List<Post> posts = postService.getPostsBySetionId(setionId);
+        responseData.getData().put("posts", posts);
+        responseData.setCode(1);
+        responseData.setMsg("获取分区" + setionId + "信息成功");
+
+        return responseData;
     }
 
     /**
@@ -43,21 +65,42 @@ public class PostController {
      * 添加帖子
      */
     @PostMapping(value={"/addPost"})
-    public ResponseData addPost(@RequestBody Post post){
+    public ResponseData addPost(@RequestBody Map<String, Object> data){
+        System.out.println("data => " + data.toString());
         ResponseData responseData = new ResponseData();
-        if(session.getAttribute("accountId") != null) {
-            if (post != null) {
-                if (postService.addPost(post) == 1) {
+
+        // 组装主题
+        Theme theme = new Theme();
+        theme.setTitle((String) data.get("title"));
+        theme.setSetionId(Integer.parseInt((String) data.get("setionId")));
+        theme.setAuthorAccountId((Integer) data.get("authorAccountId"));
+
+        // if(session.getAttribute("account") != null) {
+            if (themeService.insertTheme(theme) == 1) {
+                System.out.println("theme => " + theme);
+                int postThemeId = theme.getId();
+
+                Post post = new Post();
+                post.setSetionId(theme.getSetionId());
+                post.setPostThemeId(postThemeId);
+                post.setContent((String) data.get("content"));
+                post.setAuthorId((Integer) data.get("authorAccountId"));
+
+                if (postService.addPost(post) > 0) {
                     responseData.setCode(1);
                     responseData.setMsg("添加成功");
                 } else {
                     responseData.setCode(0);
                     responseData.setMsg("添加失败");
                 }
+            } else {
+                responseData.setCode(0);
+                responseData.setMsg("添加失败");
             }
+        /*} else {
             responseData.setCode(0);
-            responseData.setMsg("帖子为空");
-        }
+            responseData.setMsg("用户未登录");
+        }*/
 
         return responseData;
     }
@@ -89,8 +132,6 @@ public class PostController {
 
     /**
      * 更新帖子
-     * @param post
-     * @return
      */
     @PostMapping(value={"/updatePost"})
     public String updatePost(@RequestBody Post post){
@@ -107,11 +148,8 @@ public class PostController {
         return "请登陆";
     }
 
-
     /**
      * 获取当前用户的所有帖子
-     * @param user
-     * @return
      */
     @PostMapping(value={"/getUsersPosts"})
     public List getUsersPosts(@RequestBody User user){
@@ -122,8 +160,6 @@ public class PostController {
 
     /**
      * 删除当前用户的所有帖子
-     * @param user
-     * @return
      */
     @PostMapping(value={"/deleteUsersPosts"})
     public String deleteUsersPosts(@RequestBody User user){
@@ -138,19 +174,7 @@ public class PostController {
     }
 
     /**
-     * 获取当前分区的所有帖子
-     * @param id
-     * @return
-     */
-    @PostMapping(value={"/getPostsBySetionId"})
-    public List getPostsBySetionId(@RequestBody Integer id) {
-        return postService.getPostsBySetionId(id);
-    }
-
-    /**
      * 获取当前主题下所有帖子
-     * @param id
-     * @return
      */
     @PostMapping(value={"/getPostsByThemeId"})
     public List getPostsByThemeId(@RequestBody Integer id){
@@ -159,8 +183,6 @@ public class PostController {
 
     /**
      * 删除当前分区下的所有帖子
-     * @param id
-     * @return
      */
     @PostMapping(value={"/deleteBySetionId"})
     public String deletePostBySetionId(@RequestBody Integer id){
@@ -175,8 +197,6 @@ public class PostController {
 
     /**
      * 删除当前主题下的所有帖子
-     * @param id
-     * @return
      */
     @PostMapping(value={"/deleteByThemeId"})
     public String deleteByTheme(@RequestBody Integer id){
@@ -192,19 +212,14 @@ public class PostController {
 
     /**
      * 获取置顶帖
-     * @param setionId
-     * @return
      */
     @PostMapping(value={"/getTopPosts"})
     public List getTopPosts(@RequestBody Integer setionId){
-
         return postService.getTopPosts(setionId);
     }
 
     /**
      * 获取精品贴
-     * @param setionId
-     * @return
      */
     @PostMapping(value={"/getBoutiquePosts"})
     public List getBoutiquePosts(@RequestBody Integer setionId){
@@ -214,8 +229,6 @@ public class PostController {
 
     /**
      * 获取热门贴
-     * @param setionId
-     * @return
      */
     @PostMapping(value={"/getHotPosts"})
     public List getHotPosts(@RequestBody Integer setionId){

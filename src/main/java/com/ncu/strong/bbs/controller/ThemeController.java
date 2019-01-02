@@ -1,23 +1,31 @@
 package com.ncu.strong.bbs.controller;
 
 
+import com.ncu.strong.bbs.dto.ResponseData;
+import com.ncu.strong.bbs.po.Post;
 import com.ncu.strong.bbs.po.Theme;
+import com.ncu.strong.bbs.service.PostService;
 import com.ncu.strong.bbs.service.ThemeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value={"/theme"})
 public class ThemeController {
+    private final PostService postService;
+
+    private final ThemeService themeService;
 
     @Autowired
-    private ThemeService themeService;
+    public ThemeController(PostService postService, ThemeService themeService) {
+        this.postService = postService;
+        this.themeService = themeService;
+    }
 
-    @Autowired
-    private HttpSession session;
     /**
      * 获取所有主题
      * @return
@@ -48,9 +56,7 @@ public class ThemeController {
     }
 
     /**
-     * 获取当前分区下的所有主提
-     * @param setionId
-     * @return
+     * 通过分区ID获取某个分区下的所有主题
      */
     @PostMapping(value={"/getThemesBySetion"})
     public List getThemesBySetion(@RequestBody Integer setionId){
@@ -59,11 +65,9 @@ public class ThemeController {
 
     /**
      * 删除主题
-     * @param id
-     * @return
      */
     @PostMapping(value={"/deleteById"})
-    public String deleteById(@RequestBody Integer id){
+    public String deleteById(@RequestBody Integer id, HttpSession session){
         if(session.getAttribute("accountId") != null) {
             Integer accountId = (Integer)session.getAttribute("accountId");
             Theme theme = themeService.getThemeById(id);
@@ -85,11 +89,9 @@ public class ThemeController {
 
     /**
      * 删除某个用户的所有主题
-     * @param userId
-     * @return
      */
     @PostMapping(value={"/deleteByUserId"})
-    public String deleteByUserId(@RequestBody Integer userId){
+    public String deleteByUserId(@RequestBody Integer userId, HttpSession session){
         if(session.getAttribute("accountId") != null) {
            Integer accountId = (Integer)session.getAttribute("accountId");
             if(accountId == userId) {
@@ -110,11 +112,9 @@ public class ThemeController {
 
     /**
      * 删除当前分区下的所有主题
-     * @param setionId
-     * @return
      */
     @PostMapping(value={"/deleteBySetion"})
-    public String deleteBySetion(@RequestBody Integer setionId){
+    public String deleteBySetion(@RequestBody Integer setionId, HttpSession session){
         if(session.getAttribute("admin") != null) {
             if (themeService.deleteBySetionId(setionId) == 1) {
                 return "删除成功";
@@ -126,11 +126,9 @@ public class ThemeController {
 
     /**
      * 更新主题
-     * @param theme
-     * @return
      */
     @PostMapping(value={"/updateTheme"})
-    public String updateTheme(@RequestBody Theme theme){
+    public String updateTheme(@RequestBody Theme theme, HttpSession session){
         if(session.getAttribute("accountId") != null) {
             if (themeService.update(theme) == 1) {
                 return "更改成功";
@@ -142,24 +140,45 @@ public class ThemeController {
 
     /**
      * 添加主题
-     * @param theme
-     * @return
      */
     @PostMapping(value={"/insert"})
-    public String insert(@RequestBody Theme theme){
-        Integer authorId = 0;
-        String title = "";
-        Theme theme1 = themeService.getThemeById(theme.getId());
-        if(theme1 != null) {
-            authorId = theme1.getAuthorAccountId();
-            title = theme1.getTitle();
+    public ResponseData insert(@RequestBody Map<String, Object> data){
+        System.out.println("data => " + data.toString());
+        ResponseData responseData = new ResponseData();
+
+        // 组装主题
+        Theme theme = new Theme();
+        theme.setTitle((String) data.get("title"));
+        theme.setSetionId(Integer.parseInt((String) data.get("setionId")));
+        theme.setAuthorAccountId((Integer) data.get("authorAccountId"));
+
+        // if(session.getAttribute("account") != null) {
+        if (themeService.insertTheme(theme) == 1) {
+            System.out.println("theme => " + theme);
+            int postThemeId = theme.getId();
+
+            Post post = new Post();
+            post.setSetionId(theme.getSetionId());
+            post.setPostThemeId(postThemeId);
+            post.setContent((String) data.get("content"));
+            post.setAuthorId((Integer) data.get("authorAccountId"));
+
+            if (postService.addPost(post) > 0) {
+                responseData.setCode(1);
+                responseData.setMsg("添加成功");
+            } else {
+                responseData.setCode(0);
+                responseData.setMsg("添加失败");
+            }
+        } else {
+            responseData.setCode(0);
+            responseData.setMsg("添加失败");
         }
-        if(authorId == theme.getAuthorAccountId() && title.equals(theme.getTitle())){
-            return "你已经发布过该主题";
-        }
-        if(themeService.insert(theme) == 1){
-            return "添加成功";
-        }
-        return "添加失败";
+        /*} else {
+            responseData.setCode(0);
+            responseData.setMsg("用户未登录");
+        }*/
+
+        return responseData;
     }
 }

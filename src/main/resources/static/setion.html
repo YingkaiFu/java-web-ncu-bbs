@@ -12,227 +12,125 @@
         <!-- 渲染顶部导航栏 -->
         <script src="js/jquery-3.3.1.js"></script>
         <script src="js/header.js"></script>
-        <div class="container">
+        <script src="js/common.js"></script>
+        <div class="container" data-spy="scroll" data-target="#myScrollspy">
             <div class="row">
+                <!-- 左侧帖子列表 -->
                 <div class="col-lg-10 col-lg-offset-1">
+                    <!-- 页面导航 -->
                     <div class="row">
-                        <!-- 页面导航 -->
+                        <script>
+                            // 设置导航栏内容
+                            let setionId = getQueryString("setionId");
+                            $.ajax({
+                                type: "get",
+                                url: "/setion/getSetionById?setionId=" + setionId,
+                                dataType: "json",
+                                success: function (response) {
+                                    console.log(response);
+                                    $("#setion").attr("href", "setion.html?setionId=" + setionId)
+                                        .text(response.name);
+                                    $("#setion-name").text(response.name);
+                                    $("#setion-statement").text(response.statement);
+                                }
+                            });
+                        </script>
                         <ol class="breadcrumb">
                             <li><a href="index.html">首页</a></li>
                             <li><a href="setions.html">版块分区</a></li>
-                            <li><a href="setion.html?seionId=1">南昌大学</a></li>
+                            <!-- 当前版块的名字 -->
+                            <li><a href="setion.html?setionId=1" id="setion"></a></li>
                         </ol>
                     </div>
 
                     <!-- 版块介绍 -->
                     <div class="row">
                         <div id="setion-description">
-                            <h1>南昌大学</h1>
-                            <p>
+                            <!-- 版块的名字 -->
+                            <h1 id="setion-name"></h1>
+                            <!--p>
                                 主题：<span>10</span>&nbsp;&nbsp;今日主题：<span>10</span>&nbsp;&nbsp;
                                 帖数：<span>12</span>&nbsp;&nbsp;今日帖数：<span>12</span>
-                            </p>
-                            <p>
-                                阿卡林省的一所高等学校。
-                            </p>
+                            </p-->
+                            <!-- 版块的描述 -->
+                            <p id="setion-statement"></p>
                         </div>
                     </div>
-                    
+
                     <!-- 帖子主题列表 -->
                     <div class="row">
                         <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>序号</th>
-                                <th>主题</th>
-                                <th>作者</th>
-                                <th>浏览量</th>
-                                <th>回帖数</th>
-                                <th>创建时间</th>
-                                <th>最后发表</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>置顶</td>
-                                <td><p><a href="post.html?postId=1">这个版面真的很冷这个版面真的很冷这个版面真的很冷</a></p></td>
-                                <td>
-                                    <div>
-                                        <img src="https://bbs.pku.edu.cn/attach/avatar/S/Shmimy.jpg?t=1467912729" alt="头像" style="width: 20px">
-                                        <span>周璇</span>
-                                    </div>
-                                </td>
-                                <td>10</td>
-                                <td>10</td>
-                                <td>2018-12-01 12:23</td>
-                                <td>2018-12-21 12:23</td>
-                            </tr>
-                            <tr>
-                                <td>置顶</td>
-                                <td><a href="post.html?postId=2">这个版面真的很冷</a></td>
-                                <td>
-                                    <div>
-                                        <img src="https://bbs.pku.edu.cn/attach/avatar/S/Shmimy.jpg?t=1467912729" alt="头像" style="width: 20px">
-                                        <span>周璇</span>
-                                    </div>
-                                </td>
-                                <td>10</td>
-                                <td>10</td>
-                                <td>2018-12-01 12:23</td>
-                                <td>2018-12-21 12:23</td>
-                            </tr>
-                            <tr>
-                                <td>置顶</td>
-                                <td><a href="post.html?postId=3">这个版面真的很冷</a></td>
-                                <td>
-                                    <div>
-                                        <img src="https://bbs.pku.edu.cn/attach/avatar/S/Shmimy.jpg?t=1467912729" alt="头像" style="width: 20px">
-                                        <span>周璇</span>
-                                    </div>
-                                </td>
-                                <td>10</td>
-                                <td>10</td>
-                                <td>2018-12-01 12:23</td>
-                                <td>2018-12-21 12:23</td>
-                            </tr>
-                            <tr>
-                                <td>置顶</td>
-                                <td><a href="post.html?postId=4">这个版面真的很冷</a></td>
-                                <td>
-                                    <div>
-                                        <img src="https://bbs.pku.edu.cn/attach/avatar/S/Shmimy.jpg?t=1467912729" alt="头像" style="width: 20px">
-                                        <span>周璇</span>
-                                    </div>
-                                </td>
-                                <td>10</td>
-                                <td>10</td>
-                                <td>2018-12-01 12:23</td>
-                                <td>2018-12-21 12:23</td>
-                            </tr>
-                            <tr>
-                                <td>置顶</td>
-                                <td><a href="post.html?postId=5">这个版面真的很冷</a></td>
-                                <td>
-                                    <div>
-                                        <img src="https://bbs.pku.edu.cn/attach/avatar/S/Shmimy.jpg?t=1467912729" alt="头像" style="width: 20px">
-                                        <span>周璇</span>
-                                    </div>
-                                </td>
-                                <td>10</td>
-                                <td>10</td>
-                                <td>2018-12-01 12:23</td>
-                                <td>2018-12-21 12:23</td>
-                            </tr>
-                            <tr>
-                                <td>10</td>
-                                <td><a href="post.html?postId=10">这个版面真的很冷</a></td>
-                                <td>
-                                    <div>
-                                        <img src="https://bbs.pku.edu.cn/attach/avatar/S/Shmimy.jpg?t=1467912729" alt="头像" style="width: 20px">
-                                        <span>周璇</span>
-                                    </div>
-                                </td>
-                                <td>10</td>
-                                <td>10</td>
-                                <td>2018-12-01 12:23</td>
-                                <td>2018-12-21 12:23</td>
-                            </tr>
-                            <tr>
-                                <td>9</td>
-                                <td><a href="post.html?postId=9">这个版面真的很冷</a></td>
-                                <td>
-                                    <div>
-                                        <img src="https://bbs.pku.edu.cn/attach/avatar/S/Shmimy.jpg?t=1467912729" alt="头像" style="width: 20px">
-                                        <span>周璇</span>
-                                    </div>
-                                </td>
-                                <td>10</td>
-                                <td>10</td>
-                                <td>2018-12-01 12:23</td>
-                                <td>2018-12-21 12:23</td>
-                            </tr>
-                            <tr>
-                                <td>8</td>
-                                <td><a href="post.html?postId=8">这个版面真的很冷</a></td>
-                                <td>
-                                    <div>
-                                        <img src="https://bbs.pku.edu.cn/attach/avatar/S/Shmimy.jpg?t=1467912729" alt="头像" style="width: 20px">
-                                        <span>周璇</span>
-                                    </div>
-                                </td>
-                                <td>10</td>
-                                <td>10</td>
-                                <td>2018-12-01 12:23</td>
-                                <td>2018-12-21 12:23</td>
-                            </tr>
-                            <tr>
-                                <td>7</td>
-                                <td><a href="post.html?postId=7">这个版面真的很冷</a></td>
-                                <td>
-                                    <div>
-                                        <img src="https://bbs.pku.edu.cn/attach/avatar/S/Shmimy.jpg?t=1467912729" alt="头像" style="width: 20px">
-                                        <span>周璇</span>
-                                    </div>
-                                </td>
-                                <td>10</td>
-                                <td>10</td>
-                                <td>2018-12-01 12:23</td>
-                                <td>2018-12-21 12:23</td>
-                            </tr>
-                            <tr>
-                                <td>6</td>
-                                <td><a href="post.html?postId=6">这个版面真的很冷</a></td>
-                                <td>
-                                    <div>
-                                        <img src="https://bbs.pku.edu.cn/attach/avatar/S/Shmimy.jpg?t=1467912729" alt="头像" style="width: 20px">
-                                        <span>周璇</span>
-                                    </div>
-                                </td>
-                                <td>10</td>
-                                <td>10</td>
-                                <td>2018-12-01 12:23</td>
-                                <td>2018-12-21 12:23</td>
-                            </tr>
-                        </tbody>
+                            <!-- 表头 -->
+                            <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>主题</th>
+                                    <th>作者</th>
+                                    <th>浏览量</th>
+                                    <th>回帖数</th>
+                                    <th>创建时间</th>
+                                    <th>最后发表</th>
+                                </tr>
+                            </thead>
+                            <!-- 表身体 -->
+                            <tbody id="theme-list">
+                                <tr>
+                                    <td>置顶</td>
+                                    <td><p><a href="post.html?postId=1">这个版面真的很冷这个版面真的很冷这个版面真的很冷</a></p></td>
+                                    <td>
+                                        <div>
+                                            <img src="https://bbs.pku.edu.cn/attach/avatar/S/Shmimy.jpg?t=1467912729" alt="头像" style="width: 20px">
+                                            <span>周璇</span>
+                                        </div>
+                                    </td>
+                                    <td>10</td>
+                                    <td>10</td>
+                                    <td>2018-12-01 12:23</td>
+                                    <td>2018-12-21 12:23</td>
+                                </tr>
+                            </tbody>
                         </table>
-
-                        <div>
-
-                        </div>
-                        <nav aria-label="Page navigation">
-                                <ul class="pagination">
-                                  <li>
-                                    <a href="javascript:void(0);" aria-label="Previous">
-                                      <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                  </li>
-                                  <li class="active"><a href="#">1</a></li>
-                                  <li><a href="javascript:void(0);">2</a></li>
-                                  <li><a href="javascript:void(0);">3</a></li>
-                                  <li><a href="javascript:void(0);">4</a></li>
-                                  <li><a href="javascript:void(0);">5</a></li>
-                                  <li>
-                                    <a href="javascript:void(0);" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
                     </div>
 
+                    <!-- 加载更多 -->
                     <div class="row">
+                        <div class="col-lg-6 col-lg-offset-3 col-lg-offset-3">
+                            <button class="btn btn-default btn-block btn-lg" id="load-more">加载更多</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 发布帖子按钮 -->
+                <div class="col-lg-1 affix" role="complementary" id="myScrollspy" data-spy="affix" title="创建帖子">
+                    <button class="btn btn-lg" data-toggle="modal" data-target="#create-post-modal" id="post-title-button">
+                        <span class="glyphicon glyphicon-plus-sign"></span>
+                    </button>
+                </div>
+                <style>
+                    #myScrollspy {
+                        margin-top: 200px;
+                    }
+                </style>
+            </div>
+        </div>
+
+        <!-- 帖子内容编辑模态框 -->
+        <div class="modal fade" id="create-post-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
                         <form>
-                            <div class="form-group">
-                                <label for="post-title"><h2>主题</h2></label>
-                                <input type="text" class="form-control" id="post-title" placeholder="建议主题字数小于63个字">
-                                <p class="text-right"><span>0</span>/63</p>
+                            <div class="form-group" id="post-title-wrapper">
+                                <label for="post-title">帖子主题</label>
+                                <input type="text" id="post-title" class="form-control" placeholder="建议主题长度不超过31个字符">
                             </div>
                             <!-- 富文本编辑器 -->
                             <div id="editor"></div>
-                            <p class="text-right">
-                                <button type="submit" class="btn btn-default btn-primary">提交</button>
-                            </p>
                         </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消发帖</button>
+                        <button type="button" class="btn btn-primary" id="post-create">创建帖子</button>
                     </div>
                 </div>
             </div>
@@ -245,9 +143,57 @@
         <script src="js/wangEditor.js"></script>
         <script>
             // 声明创建富文本编辑器
-            var E = window.wangEditor;
-            var editor = new E("#editor");
+            let E = window.wangEditor;
+            let editor = new E("#editor");
             editor.create();
+
+            // 失去焦点触发检测事件
+            $("#question-title").blur(function () {
+                if($("#question-title").val().length >= 8 && $("#question-title").val().length <= 31) {
+                    $("#question-title-wrapper").removeClass("has-error").addClass("has-success");
+                } else {
+                    $("#question-title-wrapper").removeClass("has-success").addClass("has-error");
+                }
+            });
+
+            $("#post-title-button").click(function () {
+                let user = JSON.parse(localStorage.getItem("user"));
+                if (user === null) {
+                    editor.$textElem.attr('contenteditable', false);
+                    alert("请先登录再发帖！")
+                    $("#post-create").attr("disabled", true);
+                } else {
+                    editor.$textElem.attr('contenteditable', true);
+                    $("#post-create").attr("disabled", false);
+                }
+            });
+
+            $("#post-create").click(function () {
+                let title = $("#post-title").val();
+                let authorAccountId = JSON.parse(localStorage.getItem("user")).userAccountId;
+                let content = editor.txt.html();
+                $.ajax({
+                    url: "/theme/insert",
+                    type: "post",
+                    data: JSON.stringify({
+                        title: title,
+                        content: content,
+                        setionId: setionId,
+                        authorAccountId: authorAccountId
+                    }),
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function (response) {
+                        console.log(response);
+                        if (response.code == 1) {
+                            alert("添加成功");
+                            $("#post-title").val("");
+                            editor.txt.html("");
+                            $('#create-post-modal').modal('toggle');
+                        }
+                    }
+                });
+            });
         </script>
     </body>
 </html>
