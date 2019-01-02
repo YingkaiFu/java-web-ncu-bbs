@@ -88,7 +88,7 @@ public interface PostService {
      * @param setionId
      * @return
      */
-    List getPostsBySetionId(Integer setionId);
+    List<Post> getPostsBySetionId(Integer setionId);
 
     /**
      * 获取置顶帖
