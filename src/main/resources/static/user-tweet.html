@@ -27,13 +27,128 @@
                         <a href="user-page.html" class="list-group-item">我的主页</a>
                     </div>
                 </div>
-                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                    
+                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9" id = "show">
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                <div class="center-block" style="text-align: center;">
+                                    <a href="https://my.oschina.net/u/3417788">
+                                        <img src="https://static.oschina.net/uploads/user/1708/3417788_50.jpeg" class="img-circle" title="卖报的小画家">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                <!-- 动弹头部包含作者信息与发布信息 -->
+                                <div class="bbs-tweet-head">
+                                    <h5><strong>卖报的小画家</strong></h5>
+                                    <h6><strong>2小时前</strong></h6>
+                                </div>
+                                <!-- 动弹内容文字部分与图片部分 -->
+                                <div class="bbs-tweet-content" style="margin-top: 20px; margin-bottom: 20px;">
+                                    <div class="bbs-tweet-content-words">
+                                        <p>圣诞节是耶稣的诞辰，同时也是耶稣他妈玛利亚的受难日，在这一天不能说圣诞快乐，要说圣诞安康，这一天也被西方的安道尔、巴巴多斯岛等地区称为西方的寒食节，在这一天要吃饺子，取圣母玛利亚“教子”之意，时刻提醒我们教育后代的重要性。​</p>
+                                    </div>
+                                    <div class="bbt-tweet-content-imgs">
+                                        <img src="https://oscimg.oschina.net/oscnet/up-mb48a3fu4oi9mhs6r55gx1hzw5lm11rk!/sq/200">
+                                    </div>
+                                </div>
+                                <!-- 动弹底部按钮组 -->
+                                <div class="bbs-tweet-foot" style="display: flex; border-top-style: solid; border-top-color: #cccccc; border-top-width: 1px;
+                                                border-bottom-style: solid; border-bottom-color: #cccccc; border-bottom-width: 1px; height: 40px;">
+                                    <a href="javascript:void(0);" style="width: 33.33%; color:#333; text-decoration: none;" title="有意思" class="bbs-tweet-foot-action">
+                                        <div style="display: flex; justify-content: center; align-items: center; height: 40px;">
+                                            <span class="glyphicon glyphicon-heart-empty"></span>
+                                        </div>
+                                    </a>
+                                    <a href="javascript:void(0);" style="width: 33.33%; color:#333; text-decoration: none;" title="我想说" class="bbs-tweet-foot-action">
+                                        <div style="display: flex; justify-content: center; align-items: center; height: 40px;">
+                                            <span class="glyphicon glyphicon-comment"></span>
+                                        </div>
+                                    </a>
+                                    <a href="javascript:void(0);" style="width: 33.33%; color:#333; text-decoration: none;" title="有问题" class="bbs-tweet-foot-action">
+                                        <div style="display: flex; justify-content: center; align-items: center; height: 40px;">
+                                            <span class="glyphicon glyphicon-alert"></span>
+                                        </div>
+                                    </a>
+                                </div>
+                                <style>
+                                    .bbs-tweet-foot-action:hover {
+                                        background-color: #eeeeee;
+                                    }
+                                </style>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-
+        <script>
+            $("document").ready(function(){
+                var user = JSON.parse(localStorage.getItem("user"));
+                var accountId = user.userAccountId;
+                $.ajax({
+                    type:"GET",
+                    url:"user/tweet/" + accountId,
+                    contentType:"application/json",
+                    dataType:"json",
+                    success:function(response){
+                        var html = "";
+                        for(var i = 0;i < response.data.tweets.tweets.length;i++){
+                           html += ' <div class="list-group-item">\n' +
+                               '                        <div class="row">\n' +
+                               '                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">\n' +
+                               '                                <div class="center-block" style="text-align: center;">\n' +
+                               '                                    <a href="https://my.oschina.net/u/3417788">\n' +
+                               '                                        <img src="'+ response.data.tweets.avatar +'" class="img-circle" title="卖报的小画家">\n' +
+                               '                                    </a>\n' +
+                               '                                </div>\n' +
+                               '                            </div>\n' +
+                               '                            <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">\n' +
+                               '                                <!-- 动弹头部包含作者信息与发布信息 -->\n' +
+                               '                                <div class="bbs-tweet-head">\n' +
+                               '                                    <h5><strong>'+response.data.tweets.nickname+'</strong></h5>\n' +
+                               '                                    <h6><strong>'+response.data.tweets.tweets[i].createTime.substring(0,10)+'</strong></h6>\n' +
+                               '                                </div>\n' +
+                               '                                <!-- 动弹内容文字部分与图片部分 -->\n' +
+                               '                                <div class="bbs-tweet-content" style="margin-top: 20px; margin-bottom: 20px;">\n' +
+                               '                                    <div class="bbs-tweet-content-words">\n' +
+                               '                                        <p>'+response.data.tweets.tweets[i].content +'​</p>\n' +
+                               '                                    </div>\n' +
+                               '                                </div>\n' +
+                               '                                <!-- 动弹底部按钮组 -->\n' +
+                               '                                <div class="bbs-tweet-foot" style="display: flex; border-top-style: solid; border-top-color: #cccccc; border-top-width: 1px;\n' +
+                               '                                                border-bottom-style: solid; border-bottom-color: #cccccc; border-bottom-width: 1px; height: 40px;">\n' +
+                               '                                    <a href="javascript:void(0);" style="width: 33.33%; color:#333; text-decoration: none;" title="有意思" class="bbs-tweet-foot-action">\n' +
+                               '                                        <div style="display: flex; justify-content: center; align-items: center; height: 40px;">\n' +
+                               '                                            <span class="glyphicon glyphicon-heart-empty"></span>\n' +
+                               '                                        </div>\n' +
+                               '                                    </a>\n' +
+                               '                                    <a href="javascript:void(0);" style="width: 33.33%; color:#333; text-decoration: none;" title="我想说" class="bbs-tweet-foot-action">\n' +
+                               '                                        <div style="display: flex; justify-content: center; align-items: center; height: 40px;">\n' +
+                               '                                            <span class="glyphicon glyphicon-comment"></span>\n' +
+                               '                                        </div>\n' +
+                               '                                    </a>\n' +
+                               '                                    <a href="javascript:void(0);" style="width: 33.33%; color:#333; text-decoration: none;" title="有问题" class="bbs-tweet-foot-action">\n' +
+                               '                                        <div style="display: flex; justify-content: center; align-items: center; height: 40px;">\n' +
+                               '                                            <span class="glyphicon glyphicon-alert"></span>\n' +
+                               '                                        </div>\n' +
+                               '                                    </a>\n' +
+                               '                                </div>\n' +
+                               '                                <style>\n' +
+                               '                                    .bbs-tweet-foot-action:hover {\n' +
+                               '                                        background-color: #eeeeee;\n' +
+                               '                                    }\n' +
+                               '                                </style>\n' +
+                               '                            </div>\n' +
+                               '                        </div>\n' +
+                               '                    </div>'
+                        }
+                        $("#show").html(html);
+                    }
+                })
+            })
+        </script>
         <!-- 渲染底部版权声明 -->
         <script src="js/footer.js"></script>
         <script src="js/jquery-3.3.1.js"></script>
