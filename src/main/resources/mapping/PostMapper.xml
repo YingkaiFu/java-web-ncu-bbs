@@ -5,8 +5,10 @@
         <id column="id" jdbcType="INTEGER" property="id" />
         <result column="reply_id" jdbcType="INTEGER" property="replyId" />
         <result column="author_id" jdbcType="INTEGER" property="authorId" />
+
         <result column="setionName" jdbcType="INTEGER" property="setionName" />
         <result column="setion_id" property="setionId"/>
+
         <result column="content" jdbcType="VARCHAR" property="content" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
         <result column="mark" jdbcType="BIT" property="mark" />
@@ -14,6 +16,7 @@
         <result column="top" jdbcType="BIT" property="top" />
         <result column="post_theme_id" property="postThemeId"/>
         <result column="themeName" jdbcType="INTEGER" property="themeName" />
+
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
         <result column="reply_num" jdbcType="INTEGER" property="replyNum"/>
         <result column="nickname" jdbcType="VARCHAR" property="nickName"/>
@@ -65,11 +68,11 @@
 
     <!--通过用户id查询-->
     <select id = "selectByAuthorId" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
-        select b.id, reply_id, author_id, setion_id, content, create_time, mark, top, post_theme_id, update_time, click_num,
+        select b.id, reply_id, author_id, (select name from setion where setion.id = b.setion_id) as setionName,, content, create_time, mark, top, (select title from theme where theme.id = b.post_theme_id) as themeName, update_time, click_num,
         (select count(*) from post as a where a.reply_id = b.id) AS reply_num,(select nickname from user_profile where user_account_id = author_id) as nickname,
         (select avatar from user_profile where user_account_id = author_id) as avatar
         from post as b
-        where b.author_id = #{authorId,jdbcType = INTEGER}
+        where author_id = #{id,jdbcType=INTEGER}
     </select>
 
     <!--通过分区id查询-->

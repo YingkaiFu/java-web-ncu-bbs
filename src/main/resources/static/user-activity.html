@@ -27,21 +27,133 @@
                         <a href="user-page.html" class="list-group-item">我的主页</a>
                     </div>
                 </div>
-                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                    
-                    <div class="row">
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                            
-                        </div>
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                            
-                        </div>
-                    </div>
-                    
+               <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9" id = "show">
+
+                   <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-10 col-lg-offset-1" id="activity-list1" style="margin-top: 50px;">
+                       <div class="row" id="activity-list2">
+                           <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 bbs-activity-list-item">
+                               <header>
+                                   <a href="activity.html?activityId=2">
+                                       <img src="https://static.oschina.net/uploads/cover/4054879_iyMdf_bi.jpg" alt="" style="width: 100%;">
+                                   </a>
+                               </header>
+                               <section class="bbs-activity-list-item-content" style="margin-top: 20px; margin-bottom: 20px;">
+                                   <h3>蚂蚁金服ATEC科技大会·上海</h3>
+                                   <div style="display:flex; justify-content: space-between; align-items: center;">
+                                       <span style="font-size: 20px;">蚂蚁金服</span>
+                                       <button type="button" class="btn btn-success">立即报名</button>
+                                   </div>
+                               </section>
+                               <footer class="bbs-activity-list-item-footer">
+                                   <span class="glyphicon glyphicon-time"></span>
+                                   <span>2019.01.19</span>
+                                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                   <span class="glyphicon glyphicon-map-marker"></span><span>北京朝阳</span></footer>
+                           </div>
+
+                           </div>
+                       </div>
+                   </div>
+
+                   <div class="row">
+                       <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+                       </div>
+                       <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+                       </div>
+                   </div>
+                    -->
                 </div>
             </div>
         </div>
 
+        <script>
+            $("document").ready(function(){
+
+                var user = JSON.parse(localStorage.getItem("user"));
+                var accountId = user.userAccountId;
+                $.ajax({
+                    type:"GET",
+                    url:"/user/create/" + accountId,
+                    contentType:"application/json",
+                    dataType:"json",
+                    success:function(response){
+                        var html = '';
+                        for(var i = 0; i < response.data.userCreate.create.length;i++){
+                            html += '  <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">\n' +
+                                '\n' +
+                                '                   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-10 col-lg-offset-1" id="activity-list1" style="margin-top: 50px;">\n' +
+                                '                       <div class="row" id="activity-list2">\n' +
+                                '                           <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 bbs-activity-list-item">\n' +
+                                '                               <header>\n' +
+                                '                                   <a href="activity.html?activityId=2">\n' +
+                                '                                       <img src="https://static.oschina.net/uploads/cover/4054879_iyMdf_bi.jpg" alt="" style="width: 100%;">\n' +
+                                '                                   </a>\n' +
+                                '                               </header>\n' +
+                                '                               <section class="bbs-activity-list-item-content" style="margin-top: 20px; margin-bottom: 20px;">\n' +
+                                '                                   <h3>response.data.userCreate.create[i].description</h3>\n' +
+                                '                                   <div style="display:flex; justify-content: space-between; align-items: center;">\n' +
+                                '                                       <span style="font-size: 20px;">response.data.userCreate.nickname</span>\n' +
+                                '                                       <!--<button type="button" class="btn btn-success">立即报名</button>-->\n' +
+                                '                                   </div>\n' +
+                                '                               </section>\n' +
+                                '                               <footer class="bbs-activity-list-item-footer">\n' +
+                                '                                   <span class="glyphicon glyphicon-time"></span>\n' +
+                                '                                   <span>2019.01.19</span>\n' +
+                                '                                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n' +
+                                '                                   <span class="glyphicon glyphicon-map-marker"></span><span>response.data.userCreate.create[i].local</span></footer>\n' +
+                                '                           </div>\n' +
+                                '                               \n' +
+                                '                           </div>\n' +
+                                '                       </div>\n' +
+                                '                   </div>'
+                        }
+                        $("#show").html(html);
+                    }
+                })
+            })
+           /* $(function () {
+                $.ajax({
+                    type: "get",
+                    url: "/activity/latest",
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function (response) {
+                        console.log(response);
+                        if (response.code == 1) {
+                            var activity = response.data.activities;
+                            var html="";
+                            for (var i = 0; i < activity.length; i++) {
+                                htmlDiv = "<div class='col-xs-12 col-sm-6 col-md-4 col-lg-4 bbs-activity-list-item'>" +
+                                    "<header>" +
+                                    "<a href='activity.html?activityId="+ activity[i].id +"'>" +
+                                    "<img src='https://static.oschina.net/uploads/cover/4054879_iyMdf_bi.jpg' alt='' style='width: 100%;'>" +
+                                    "</a>" +
+                                    "</header>";
+                                htmlContent = "<section class='bbs-activity-list-item-content' style='margin-top: 20px; margin-bottom: 20px;'>" +
+                                    "<h3>"+ activity[i].description+"</h3>" +
+                                    "<div style='display:flex; justify-content: space-between; align-items: center;'>" +
+                                    "<span style='font-size: 20px;'>"+ activity[i].creater.nickname +"</span>" +
+                                    "<button type='button' class='btn btn-success'>立即报名</button>" +
+                                    "</div>" +
+                                    "</section>";
+                                htmlFooter = "<footer class='bbs-activity-list-item-footer'>" +
+                                    "<span class='glyphicon glyphicon-time'></span>" +
+                                    "<span>"+ activity[i].activityStartTime+"</span>" +
+                                    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                                    "<span class='glyphicon glyphicon-map-marker'></span>" +
+                                    "<span>"+ activity[i].locale+"</span></footer></div>";
+                                html += htmlDiv + htmlContent + htmlFooter;
+                            }
+                            $("#activity-list").html(html);
+                        } else {
+                            alert(response.msg);
+                        }
+                    }
+                })
+            });*/
+        </script>
         <!-- 渲染底部版权声明 -->
         <script src="js/footer.js"></script>
         <script src="js/jquery-3.3.1.js"></script>
