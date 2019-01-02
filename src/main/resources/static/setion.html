@@ -66,7 +66,7 @@
                                     <th>序号</th>
                                     <th>主题</th>
                                     <th>作者</th>
-                                    <th>浏览量</th>
+                                    <!--th>浏览量</th-->
                                     <th>回帖数</th>
                                     <th>创建时间</th>
                                     <th>最后发表</th>
@@ -74,23 +74,38 @@
                             </thead>
                             <!-- 表身体 -->
                             <tbody id="theme-list">
-                                <tr>
-                                    <td>置顶</td>
-                                    <td><p><a href="post.html?postId=1">这个版面真的很冷这个版面真的很冷这个版面真的很冷</a></p></td>
-                                    <td>
-                                        <div>
-                                            <img src="https://bbs.pku.edu.cn/attach/avatar/S/Shmimy.jpg?t=1467912729" alt="头像" style="width: 20px">
-                                            <span>周璇</span>
-                                        </div>
-                                    </td>
-                                    <td>10</td>
-                                    <td>10</td>
-                                    <td>2018-12-01 12:23</td>
-                                    <td>2018-12-21 12:23</td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
+                    <script>
+                        $.ajax({
+                            url: "/theme/getThemesBySetion?setionId=" + getQueryString("setionId"),
+                            type: "get",
+                            contentType: "application/json",
+                            success: function (response) {
+                                console.log("getThemesBySetion =>");
+                                console.log(response);
+                                for (let i = 0; i < response.length; i++) {
+                                    let theme = response[i];
+                                    $("#theme-list").append(
+                                        '<tr>' +
+                                            '<td>' + theme.id + '</td>' +
+                                            '<td><p><a href="post.html?themeId=' + theme.id + '">' + theme.title + '</a></p></td>' +
+                                            '<td>' +
+                                                '<div>' +
+                                                '<img src="' + theme.avatar + '" alt="头像" style="width: 20px">' +
+                                                    '<span>' + theme.nickname + '</span>' +
+                                                '</div>' +
+                                            '</td>' +
+                                            '<td>' + theme.replyNum + '</td>' +
+                                            '<td>' + bbsParseDate(theme.createTime) + '</td>' +
+                                            '<td>' + bbsParseDate(theme.latestTime) + '</td>' +
+                                        '</tr>'
+                                    );
+                                }
+                            }
+                        });
+                    </script>
 
                     <!-- 加载更多 -->
                     <div class="row">

@@ -47,19 +47,17 @@ public class ThemeController {
 
     /**
      * 通过id号获取主题
-     * @param id
-     * @return
      */
-    @PostMapping(value={"/getThemeById"})
-    public Theme getThemeById(@RequestBody Integer id){
-        return themeService.getThemeById(id);
+    @GetMapping(value={"/getThemeById"})
+    public Theme getThemeById(@RequestParam Integer themeId){
+        return themeService.getThemeById(themeId);
     }
 
     /**
      * 通过分区ID获取某个分区下的所有主题
      */
-    @PostMapping(value={"/getThemesBySetion"})
-    public List getThemesBySetion(@RequestBody Integer setionId){
+    @GetMapping(value={"/getThemesBySetion"})
+    public List<Theme> getThemesBySetion(@RequestParam Integer setionId){
         return themeService.getThemesBySetionId(setionId);
     }
 
@@ -162,6 +160,7 @@ public class ThemeController {
             post.setPostThemeId(postThemeId);
             post.setContent((String) data.get("content"));
             post.setAuthorId((Integer) data.get("authorAccountId"));
+            System.out.println("post => " + post.toString());
 
             if (postService.addPost(post) > 0) {
                 responseData.setCode(1);

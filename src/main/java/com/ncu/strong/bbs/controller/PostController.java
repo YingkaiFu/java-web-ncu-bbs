@@ -80,43 +80,19 @@ public class PostController {
     /**
      * 添加帖子
      */
-    @PostMapping(value={"/addPost"})
-    public ResponseData addPost(@RequestBody Map<String, Object> data){
-        System.out.println("data => " + data.toString());
+    @PostMapping(value={"/addPost"}, consumes = "application/json")
+    public ResponseData addPost(@RequestBody Post post){
+        System.out.println(post.toString());
         ResponseData responseData = new ResponseData();
 
-        // 组装主题
-        Theme theme = new Theme();
-        theme.setTitle((String) data.get("title"));
-        theme.setSetionId(Integer.parseInt((String) data.get("setionId")));
-        theme.setAuthorAccountId((Integer) data.get("authorAccountId"));
-
-        // if(session.getAttribute("account") != null) {
-            if (themeService.insertTheme(theme) == 1) {
-                System.out.println("theme => " + theme);
-                int postThemeId = theme.getId();
-
-                Post post = new Post();
-                post.setSetionId(theme.getSetionId());
-                post.setPostThemeId(postThemeId);
-                post.setContent((String) data.get("content"));
-                post.setAuthorId((Integer) data.get("authorAccountId"));
-
-                if (postService.addPost(post) > 0) {
-                    responseData.setCode(1);
-                    responseData.setMsg("添加成功");
-                } else {
-                    responseData.setCode(0);
-                    responseData.setMsg("添加失败");
-                }
-            } else {
-                responseData.setCode(0);
-                responseData.setMsg("添加失败");
-            }
-        /*} else {
+        // if(session.getAttribute("account") != null)
+        if (postService.addPost(post) > 0) {
+            responseData.setCode(1);
+            responseData.setMsg("添加成功");
+        } else {
             responseData.setCode(0);
-            responseData.setMsg("用户未登录");
-        }*/
+            responseData.setMsg("添加失败");
+        }
 
         return responseData;
     }
@@ -192,9 +168,10 @@ public class PostController {
     /**
      * 获取当前主题下所有帖子
      */
-    @PostMapping(value={"/getPostsByThemeId"})
-    public List getPostsByThemeId(@RequestBody Integer id){
-        return postService.getPostsByThemeId(id);
+    @GetMapping(value={"/getPostsByThemeId"})
+    public List getPostsByThemeId(@RequestParam Integer themeId){
+        System.out.println("themeId => " + themeId);
+        return postService.getPostsByThemeId(themeId);
     }
 
     /**

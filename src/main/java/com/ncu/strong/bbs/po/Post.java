@@ -103,6 +103,26 @@ public class Post {
         return this.user;
     }*/
 
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id=" + id +
+                ", replyId=" + replyId +
+                ", authorId=" + authorId +
+                ", setionId=" + setionId +
+                ", createTime=" + createTime +
+                ", mark=" + mark +
+                ", clickNum=" + clickNum +
+                ", top=" + top +
+                ", postThemeId=" + postThemeId +
+                ", updateTime=" + updateTime +
+                ", content='" + content + '\'' +
+                ", replyNum=" + replyNum +
+                ", nickName='" + nickName + '\'' +
+                ", avatar='" + avatar + '\'' +
+                '}';
+    }
+
     private Integer replyNum;
 
     private String nickName;

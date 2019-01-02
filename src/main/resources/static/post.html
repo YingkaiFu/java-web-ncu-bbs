@@ -12,16 +12,69 @@
         <!-- 渲染顶部导航栏 -->
         <script src="js/jquery-3.3.1.js"></script>
         <script src="js/header.js"></script>
-
+        <script src="js/common.js"></script>
         <div class="container">
+            <script>
+                let themeId = getQueryString("themeId");
+
+                $.ajax({
+                    url: "/theme/getThemeById?themeId=" + themeId,
+                    type: "get",
+                    contentType: "application/json",
+                    success: function (response) {
+                        theme = response;
+                        $.ajax({
+                            type: "get",
+                            url: "/post/getPostsByThemeId?themeId=" + themeId,
+                            contentType: "application/json",
+                            success: function (response) {
+                                console.log(response);
+                                for (let i = 0; i < response.length; i++) {
+                                    let post = response[i];
+                                    console.log();
+                                    $("#postList").append(
+                                        '<div class="row list-group-item">' +
+                                        '<div class="col-lg-3">' +
+                                        '<div style="text-align: center;">' +
+                                        '<a href="user-page.html?accountId=' + post.authorId + '">' +
+                                        '<img src="/img/200x200.jpg" class="img-circle" title="netuxi">' +
+                                        '</a>' +
+                                        '<p class="h3">' + post.nickName + '</p>' +
+                                        '</div>' +
+                                        '</div>' +
+                                        '<div class="col-lg-9" style="border-left-width: 1px; border-left-style: solid; border-left-color: #dddddd;">' +
+                                        (post.replyId != null ?
+                                            '<div style="border-left-width: 5px; padding-left: 5px; border-left-style: solid; border-left-color: antiquewhite;">' +
+                                            '<span>罗伟在他的帖子中提到：</span>' +
+                                            '<div>' +
+                                            '<h3>锤子科技被申请财产保全</h3>' +
+                                            '<p>12 月 26 日，有网友曝出罗永浩已正式卸任锤子科技子公司成都野望数码科技有限公司法定代表人。</p>' +
+                                            '</div>' +
+                                            '</div>' : "") +
+                                        '<div style="border-bottom: rebeccapurple solid 1px;">' + post.content + '</div>' +
+                                        '<div>' +
+                                        '<button type="button" class="btn reply-button" data-reply-id="' + post.id + '">' +
+                                        '<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>回帖' +
+                                        '</button>' +
+                                        '</div>' +
+                                        '</div>' +
+                                        '</div>'
+                                    );
+                                }
+                            }
+                        });
+                    }
+                });
+
+
+
+            </script>
             <div class="row">
                 <div class="col-lg-12">
                     <!-- 导航路径 -->
                     <ol class="breadcrumb">
                         <li><a href="index.html">首页</a></li>
                         <li><a href="setions.html">版块分区</a></li>
-                        <li><a href="setions.html">南昌大学</a></li>
-                        <li><a href="setions.html">这个版面真的很冷</a></li>
                     </ol>
                 </div>
             </div>
@@ -30,114 +83,34 @@
             <div class="row">
                 <!-- 帖子列表 -->
                 <div class="col-lg-12">
-                <div class="list-group" id="postList">
-                        <div class="row list-group-item">
-                            <!-- 用户信息部分 -->
-                            <div class="col-lg-3">
-                                <div style="text-align: center;">
-                                    <p class="text-right" style="height: 0;">
-                                        <span style="font-size: 25px; background-color: cornflowerblue; color: white; width: 60px; display: inline-block; text-align: center; border-radius: 5px; ">楼主</span>
-                                    </p>
-                                    <a href="user-page.html">
-                                        <img src="https://oscimg.oschina.net/oscnet/up-ea757fba5ca5ffbae906130784d5e178.jpeg!/both/200x200" class="img-circle" title="netuxi">
-                                    </a>
-                                    <p class="h3">netuxi</p>
-                                </div>
-                            </div>
-                            <!-- 帖子详情 -->
-                            <div class="col-lg-9">
-                                <h3>锤子科技被申请财产保全</h3>
-                                <p>12 月 26 日，有网友曝出罗永浩已正式卸任锤子科技子公司成都野望数码科技有限公司法定代表人。</p>
-                                <p>另据媒体报道，近日在探访锤子科技成都市成华区世茂大厦的 15 楼的办公点时，发现原办公室被替换成成都成华区税务局。成都税务局相关人士称，锤子科技 12 月份已经不在这里了。</p>
-                                <p>锤子方面暂未就此事做出任何回复。</p>
-                                <p>一天之后，又有媒体曝出，锤子科技被奥音科技 (北京) 有限公司申请诉前财产保全，法院裁定冻结锤子科技在招商银行的存款人民币 450 万元整。</p>
-                                <h3>跑路还是憋大招？</h3>
-                            </div>
-                        </div>
-                        <div class="row list-group-item">
-                            <!-- 用户信息部分 -->
-                            <div class="col-lg-3">
-                                <div style="text-align: center;">
-                                    <p class="text-right" style="height: 0;">
-                                        <span style="font-size: 25px; background-color: cornflowerblue; color: white; width: 60px; display: inline-block; text-align: center; border-radius: 5px; ">楼主</span>
-                                    </p>
-                                    <a href="user-page.html">
-                                        <img src="https://oscimg.oschina.net/oscnet/up-ea757fba5ca5ffbae906130784d5e178.jpeg!/both/200x200" class="img-circle" title="netuxi">
-                                    </a>
-                                    <p class="h3">netuxi</p>
-                                </div>
-                            </div>
-
-                            <!-- 帖子详情 -->
-                            <div class="col-lg-9" style="border-left-width: 1px; border-left-style: solid; border-left-color: #dddddd;">
-                                <!-- 原帖内容 -->
-                                <div style="border-left-width: 5px; padding-left: 5px; border-left-style: solid; border-left-color: antiquewhite;">
-                                    <span>罗伟在他的帖子中提交：</span>
-                                    <div>
-                                        <h3>锤子科技被申请财产保全</h3>
-                                        <p>12 月 26 日，有网友曝出罗永浩已正式卸任锤子科技子公司成都野望数码科技有限公司法定代表人。</p>
-                                    </div>
-                                </div>
-
-                                <!-- 本帖内容 -->
-                                <div style="border-bottom: rebeccapurple solid 1px;">
-                                    <h3>锤子科技被申请财产保全</h3>
-                                    <p>12 月 26 日，有网友曝出罗永浩已正式卸任锤子科技子公司成都野望数码科技有限公司法定代表人。</p>
-                                    <p>另据媒体报道，近日在探访锤子科技成都市成华区世茂大厦的 15 楼的办公点时，发现原办公室被替换成成都成华区税务局。成都税务局相关人士称，锤子科技 12 月份已经不在这里了。</p>
-                                    <p>锤子方面暂未就此事做出任何回复。</p>
-                                    <p>一天之后，又有媒体曝出，锤子科技被奥音科技 (北京) 有限公司申请诉前财产保全，法院裁定冻结锤子科技在招商银行的存款人民币 450 万元整。</p>
-                                </div>
-
-                                <!-- 回复按钮 -->
-                                <div>
-                                    <button type="button" class="btn btn-lg" data-toggle="modal" data-target="#myModal">
-                                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>回帖
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row list-group-item">
-                            <!-- 用户信息部分 -->
-                            <div class="col-lg-3">
-                                <div style="text-align: center;">
-                                    <p class="text-right" style="height: 0;">
-                                        <span style="font-size: 25px; background-color: cornflowerblue; color: white; width: 60px; display: inline-block; text-align: center; border-radius: 5px; ">楼主</span>
-                                    </p>
-                                    <a href="user-page.html">
-                                        <img src="https://oscimg.oschina.net/oscnet/up-ea757fba5ca5ffbae906130784d5e178.jpeg!/both/200x200" class="img-circle" title="netuxi">
-                                    </a>
-                                    <p class="h3">netuxi</p>
-                                </div>
-                            </div>
-                            <!-- 帖子详情 -->
-                            <div class="col-lg-9">
-                                <h3>锤子科技被申请财产保全</h3>
-                                <p>12 月 26 日，有网友曝出罗永浩已正式卸任锤子科技子公司成都野望数码科技有限公司法定代表人。</p>
-                                <p>另据媒体报道，近日在探访锤子科技成都市成华区世茂大厦的 15 楼的办公点时，发现原办公室被替换成成都成华区税务局。成都税务局相关人士称，锤子科技 12 月份已经不在这里了。</p>
-                                <p>锤子方面暂未就此事做出任何回复。</p>
-                                <p>一天之后，又有媒体曝出，锤子科技被奥音科技 (北京) 有限公司申请诉前财产保全，法院裁定冻结锤子科技在招商银行的存款人民币 450 万元整。</p>
-                                <h3>跑路还是憋大招？</h3>
-                            </div>
-                        </div>
+                    <div class="list-group" id="postList">
                     </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2">
+                    <h3>发帖吐槽一下</h3>
+                    <div id="post-editor"></div>
+                    <button class="btn btn-default btn-block success" type="button" role="button" id="create-post">发帖</button>
                 </div>
             </div>
         </div>
 
-        <!-- Modal -->
+        <!-- 模态框 -->
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                        <h4 class="modal-title" id="myModalLabel">回帖</h4>
                     </div>
-                    <div class="modal-body" id="editor">
-                        
+                    <div class="modal-body" id="editor"></div>
+                    <div style="display: none" value="1" id="reply-id">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button type="button" class="btn btn-primary">发送</button>
+                        <button type="button" class="btn btn-primary" id="post-send-button">发送</button>
                     </div>
                 </div>
             </div>
@@ -150,9 +123,170 @@
         <script src="js/wangEditor.js"></script>
         <script>
             // 声明创建富文本编辑器
-            var E = window.wangEditor;
-            var editor = new E("#editor");
+            let E = window.wangEditor;
+            let editor = new E("#editor");
+            editor.customConfig.emotions = [
+                {
+                    title: 'emoji',
+                    type: 'emoji',
+                    content: ['😁','😂','😃','😄','😅','😆','😉','😊','😋','😏','😒','😓','😔','😖','😘','😚','😜','😝','😞',
+                        '😠','😡','😢','😣','😤','😥','😨','😩','😪','😫','😭','😰','😱','😲','😳','😵','😷','😸','😹','😺',
+                        '😻','😼','😽','😾','😿','🙀','🙅','🙆','🙇','🙈','🙉','🙊','🙋','🙌','🙍','🙎','🙏']
+                }
+            ];
             editor.create();
+
+            // 发帖编辑器
+            let postEditor = new E("#post-editor");
+            postEditor.customConfig.emotions = [
+                {
+                    title: 'emoji',
+                    type: 'emoji',
+                    content: ['😁','😂','😃','😄','😅','😆','😉','😊','😋','😏','😒','😓','😔','😖','😘','😚','😜','😝','😞',
+                        '😠','😡','😢','😣','😤','😥','😨','😩','😪','😫','😭','😰','😱','😲','😳','😵','😷','😸','😹','😺',
+                        '😻','😼','😽','😾','😿','🙀','🙅','🙆','🙇','🙈','🙉','🙊','🙋','🙌','🙍','🙎','🙏']
+                }
+            ];
+            postEditor.create();
+
+            // 在主题下发帖
+            $("#create-post").click(function () {
+                // 在主题下发送帖子，首先需要获得主题ID
+                let authorId = JSON.parse(localStorage.getItem("user")).userAccountId;
+                let setionId = theme.setionId;
+                let postThemeId = theme.id;
+                let content = postEditor.txt.html();
+                $.ajax({
+                    url: "/post/addPost",
+                    type: "post",
+                    data: JSON.stringify({
+                        authorId: authorId,
+                        setionId: setionId,
+                        postThemeId: postThemeId,
+                        content: content
+                    }),
+                    dataType: "json",
+                    contentType: "application/json",
+                    success: function (response) {
+                        alert("创建成功");
+                        $("#postList").append(
+                            '<div class="row list-group-item">' +
+                                '<div class="col-lg-3">' +
+                                    '<div style="text-align: center;">' +
+                                        '<p class="text-right" style="height: 0;">' +
+                                            '<span style="font-size: 25px; background-color: cornflowerblue; color: white; width: 60px; display: inline-block; text-align: center; border-radius: 5px; ">' + (theme.authorAccountId === JSON.parse(localStorage.getItem("user")).userAccountId? "楼主" : "访客") + '</span>' +
+                                        '</p>' +
+                                        '<a href="user-page.html?accountId=' + JSON.parse(localStorage.getItem("user")).userAccountId + '">' +
+                                            '<img src="/img/200x200.jpg" class="img-circle" title="netuxi">' +
+                                        '</a>' +
+                                    '<p class="h3">' + JSON.parse(localStorage.getItem("user")).nickname + '</p>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div class="col-lg-9" style="border-left-width: 1px; border-left-style: solid; border-left-color: #dddddd;">' +
+                            '<div style="border-bottom: rebeccapurple solid 1px;">' + content + '</div>' +
+                            '<div>' +
+                            '<button type="button" class="btn" data-toggle="modal" data-target="#myModal">' +
+                            '<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>回帖' +
+                            '</button>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>');
+                    },
+                    error: function (response) {
+                        alert("发送帖子成功啦");
+                        $("#postList").append('<div class="row list-group-item">' +
+                            '<div class="col-lg-3">' +
+                                '<div style="text-align: center;">' +
+                                    '<p class="text-right" style="height: 0;">' +
+                                        '<span style="font-size: 25px; background-color: cornflowerblue; color: white; width: 60px; display: inline-block; text-align: center; border-radius: 5px; ">' + (theme.authorAccountId === post.authorId ? "楼主" : "访客") + '</span>' +
+                                    '</p>' +
+                                    '<a href="user-page.html?accountId=' + post.authorId + '">' +
+                                        '<img src="/img/200x200.jpg" class="img-circle" title="netuxi">' +
+                                    '</a>' +
+                                    '<p class="h3">' + JSON.parse(localStorage.getItem("user")).nickname + '</p>' +
+                                '</div>' +
+                            '</div>' +
+                            '<div class="col-lg-9" style="border-left-width: 1px; border-left-style: solid; border-left-color: #dddddd;">' +
+                                '<div style="border-bottom: rebeccapurple solid 1px;">' + content + '</div>' +
+                                    '<div>' +
+                                        '<!--button type="button" class="btn" data-toggle="modal" data-target="#myModal">' +
+                                            '<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>回帖' +
+                                        '</button-->' +
+                                    '</div>' +
+                                '</div>' +
+                            '</div>'
+                        );
+                    }
+                });
+            });
+
+            // 发送回复帖
+            $("#postList").on("click", ".reply-button", function () {
+                $("#myModal").modal();
+                // console.log($(this).parent().attr("data-reply-id"));
+                // 所要回复帖子的ID
+                let replyId = $($(this).parent().html()).attr("data-reply-id");
+                // 所要回复帖子的内容
+                console.log($(this).parent().parent().html());
+                let toContent = $(this).parent().parent().find("div:first-child").html();
+                console.log(replyId);
+                console.log($("#reply-id").attr("value", replyId));
+                $("#reply-id").html(toContent);
+            })
+
+            $("#myModal").on("click", "#post-send-button", function () {
+                let content = editor.txt.html();
+                let authorId = JSON.parse(localStorage.getItem("user")).userAccountId;
+                let setionId = theme.setionId;
+                let postThemeId = theme.id;
+                $.ajax({
+                    url: "/post/addPost",
+                    type: "post",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        content: content,
+                        authorId: authorId,
+                        setionId: setionId,
+                        postThemeId: postThemeId
+                    }),
+                    success: function (response) {
+                        console.log(response);
+                        alert("成功哈哈!");
+                        let toContent = $("#reply-id").html();
+                        console.log("所要回复帖子的内容");
+                        console.log(toContent);
+                        $("#postList").append(
+                            '<div class="row list-group-item">' +
+                                '<div class="col-lg-3">' +
+                                    '<div style="text-align: center;">' +
+                                        '<a href="user-page.html?accountId=' + post.authorId + '">' +
+                                            '<img src="/img/200x200.jpg" class="img-circle" title="netuxi">' +
+                                        '</a>' +
+                                        '<p class="h3">' + post.nickName + '</p>' +
+                                    '</div>' +
+                                '</div>' +
+                                '<div class="col-lg-9" style="border-left-width: 1px; border-left-style: solid; border-left-color: #dddddd;">' +
+                                    '<div style="border-left-width: 5px; padding-left: 5px; border-left-style: solid; border-left-color: antiquewhite;">' +
+                                        '<span>罗伟在他的帖子中提到：</span>' +
+                                        '<div>' + toContent + '</div>' +
+                                    '</div>' +
+                                    '<div style="border-bottom: rebeccapurple solid 1px;">' + content + '</div>' +
+                                        '<div>' +
+                                            '<button type="button" class="btn reply-button" data-reply-id="' + post.id + '">' +
+                                                '<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>回帖' +
+                                            '</button>' +
+                                        '</div>' +
+                                    '</div>' +
+                                '</div>' +
+                            '</div>'
+                        );
+                    },
+                    error: function (response) {
+                        console.log(response);
+                        alert("失败哈哈！");
+                    }
+                });
+            });
         </script>
     </body>
 </html>
